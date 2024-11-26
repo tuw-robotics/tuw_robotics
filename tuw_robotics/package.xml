@@ -1,0 +1,19 @@
+<package format="3">
+  <name> tuw_robotics </name>
+  <version>0.0.1</version>
+  <description> TUW Robotics packages  </description>
+  <maintainer email="markus.bader@tuwien.ac.at">Markus Bader</maintainer>
+  <license>BSD-3-Clause</license>
+
+  <url>https://github.com/tuw-robotics/tuw_robotics</url>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <exec_depend>tuw</exec_depend>
+  <exec_depend>tuw_json</exec_depend>
+  <exec_depend>tuw_rviz</exec_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

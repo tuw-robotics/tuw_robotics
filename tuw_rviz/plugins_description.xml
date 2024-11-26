@@ -1,0 +1,32 @@
+<library path="tuw_rviz">
+
+    <!-- Displays plugins -->
+  
+  <class
+    name="std_pose/Pose"
+    type="std_pose::displays::PoseDisplay"
+    base_class_type="rviz_common::Display">
+    <description>
+      Displays a geometry_msgs::PoseStamped message.  &lt;a href="http://www.ros.org/wiki/rviz/DisplayTypes/Pose"&gt;More Information&lt;/a&gt;.
+    </description>
+    <message_type>geometry_msgs/msg/PoseStamped</message_type>
+  </class>
+  <class
+    name="tuw_shape_array/ShapeArray"
+    type="tuw_shape_array::displays::ShapeArrayDisplay"
+    base_class_type="rviz_common::Display">
+    <description>
+      Displays a tuw_object_msgs::ShapeArray message.  &lt;a href="http://www.ros.org/wiki/rviz/DisplayTypes/Pose"&gt;More Information&lt;/a&gt;.
+    </description>
+    <message_type>tuw_object_msgs/msg/ShapeArray</message_type>
+  </class>
+  <class
+    name="tuw_graph/Graph"
+    type="tuw_graph::displays::GraphDisplay"
+    base_class_type="rviz_common::Display">
+    <description>
+      Displays a tuw_graph_msgs::Graph message.
+    </description>
+    <message_type>tuw_graph_msgs/msg/Graph</message_type>
+  </class>
+  </library>
