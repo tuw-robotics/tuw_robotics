@@ -1,0 +1,19 @@
+# - Config file for the TUWDebug package
+# It defines the following variables
+#  TUWDebug_INCLUDE_DIRS - include directories for TUWDebug
+#  TUWDebug_LIBRARIES    - libraries to link against
+#  TUWDebug_EXECUTABLE   - the bar executable
+
+# Compute paths
+get_filename_component(TUWDebug_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+set(TUWDebug_INCLUDE_DIRS "@CONF_INCLUDE_DIRS@")
+
+# Our library dependencies (contains definitions for IMPORTED targets)
+if(NOT TARGET tuw_debug AND NOT TUWDebug_BINARY_DIR)
+  include("${TUWDebug_CMAKE_DIR}/TUWDebugTargets.cmake")
+endif()
+
+# These are IMPORTED targets created by TUWDebugTargets.cmake
+set(TUWDebug_LIBRARIES tuw_debug)
+set(TUWDebug_EXECUTABLE tuw_debug_demo)
+
