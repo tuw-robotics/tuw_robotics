@@ -2,8 +2,8 @@
 Changelog for package tuw_robotics
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.0.2 (2024-11-28)
+------------------
 * first commit
   tuw_debug removed
   ament export fixed
