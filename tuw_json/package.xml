@@ -15,7 +15,7 @@
   <build_depend>tuw_object_msgs</build_depend>
   <build_depend>tuw_graph_msgs</build_depend>
   <build_depend>tuw_object_map_msgs</build_depend>
-  <build_depend>libjsoncpp</build_depend>
+  <build_depend>libjsoncpp-dev</build_depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
