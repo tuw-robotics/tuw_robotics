@@ -59,21 +59,21 @@ void Gamepad::on_timer()
   current_cmd_.twist.angular.x = 0.0;
   current_cmd_.twist.angular.y = 0.0;
   current_cmd_.twist.angular.z = 0.0;
-  if ( buttons[ button_deadman_])
+  if (buttons[button_deadman_])
   {
-    if (axis_vx_ >= 0)
-      current_cmd_.twist.linear.x = axes[axis_vx_] * scale_v_;
-    if (axis_vy_ >= 0)
-      current_cmd_.twist.linear.y = axes[axis_vy_] * scale_v_;
-    if (axis_vz_ >= 0)
-      current_cmd_.twist.linear.z = axes[axis_vz_] * scale_v_;
+    if (axis_linear_x_ >= 0)
+      current_cmd_.twist.linear.x = axes[axis_linear_x_] * scale_linear_;
+    if (axis_linear_y_ >= 0)
+      current_cmd_.twist.linear.y = axes[axis_linear_y_] * scale_linear_;
+    if (axis_linear_z_ >= 0)
+      current_cmd_.twist.linear.z = axes[axis_linear_z_] * scale_linear_;
 
-    if (axis_rx_ >= 0)
-      current_cmd_.twist.angular.x = axes[axis_rx_] * scale_r_;
-    if (axis_ry_ >= 0)
-      current_cmd_.twist.angular.y = axes[axis_ry_] * scale_r_;
-    if (axis_rz_ >= 0)
-      current_cmd_.twist.angular.z = axes[axis_rz_] * scale_r_;
+    if (axis_angular_x_ >= 0)
+      current_cmd_.twist.angular.x = axes[axis_angular_x_] * scale_angular_;
+    if (axis_angular_y_ >= 0)
+      current_cmd_.twist.angular.y = axes[axis_angular_y_] * scale_angular_;
+    if (axis_angular_z_ >= 0)
+      current_cmd_.twist.angular.z = axes[axis_angular_z_] * scale_angular_;
   }
 
   if (use_stamped_velocity_)
@@ -92,14 +92,14 @@ void Gamepad::declare_parameters()
   declare_parameters_with_description("use_stamped_velocity", false, "On true it uses TwistStamped messages, otherwise Twist!");
 
   declare_parameters_with_description("button_deadman", 4, "button id deadman", 0, 8, 1);
-  declare_parameters_with_description("axis_vx", 4, "axis id along x  (-1 means not used)", -1, 8, 1);
-  declare_parameters_with_description("axis_rx", -1, "axis id around x (-1 means not used)", -1, 8, 1);
-  declare_parameters_with_description("axis_vy", -1, "axis id along y  (-1 means not used)", -1, 8, 1);
-  declare_parameters_with_description("axis_ry", -1, "axis id around y (-1 means not used)", -1, 8, 1);
-  declare_parameters_with_description("axis_vz", -1, "axis id along z  (-1 means not used)", -1, 8, 1);
-  declare_parameters_with_description("axis_rz", 0, "axis id around z (-1 means not used)", -1, 8, 1);
-  declare_parameters_with_description("scale_v", 1.0, "scale linear", -10.0, 10.0, 0.1);
-  declare_parameters_with_description("scale_r", 1.0, "scale roation", -10.0, 10.0, 0.1);
+  declare_parameters_with_description("lx",  4, "axis linear x  (-1 means not used)", -1, 8, 1);
+  declare_parameters_with_description("ax", -1, "axis angular x (-1 means not used)", -1, 8, 1);
+  declare_parameters_with_description("ly", -1, "axis linear y  (-1 means not used)", -1, 8, 1);
+  declare_parameters_with_description("ay", -1, "axis angular y (-1 means not used)", -1, 8, 1);
+  declare_parameters_with_description("lz", -1, "axis linear z  (-1 means not used)", -1, 8, 1);
+  declare_parameters_with_description("az",  0, "axis angular z (-1 means not used)", -1, 8, 1);
+  declare_parameters_with_description("scale_linear", 1.0, "scale linear", -10.0, 10.0, 0.1);
+  declare_parameters_with_description("scale_angular", 1.0, "scale roation", -10.0, 10.0, 0.1);
 }
 
 bool Gamepad::read_dynamic_parameters()
@@ -113,14 +113,14 @@ bool Gamepad::read_dynamic_parameters()
   {
     update_parameter_and_log("rate", rate_, changes, first_call);
     update_parameter_and_log("button_deadman", button_deadman_, changes, first_call);
-    update_parameter_and_log("axis_vx", axis_vx_, changes, first_call);
-    update_parameter_and_log("axis_rx", axis_rx_, changes, first_call);
-    update_parameter_and_log("axis_vy", axis_vy_, changes, first_call);
-    update_parameter_and_log("axis_ry", axis_ry_, changes, first_call);
-    update_parameter_and_log("axis_vz", axis_vz_, changes, first_call);
-    update_parameter_and_log("axis_rz", axis_rz_, changes, first_call);
-    update_parameter_and_log("scale_v", scale_v_, changes, first_call);
-    update_parameter_and_log("scale_r", scale_r_, changes, first_call);
+    update_parameter_and_log("lx", axis_linear_x_, changes, first_call);
+    update_parameter_and_log("ax", axis_angular_x_, changes, first_call);
+    update_parameter_and_log("ly", axis_linear_y_, changes, first_call);
+    update_parameter_and_log("ay", axis_angular_y_, changes, first_call);
+    update_parameter_and_log("lz", axis_linear_z_, changes, first_call);
+    update_parameter_and_log("az", axis_angular_z_, changes, first_call);
+    update_parameter_and_log("scale_linear", scale_linear_, changes, first_call);
+    update_parameter_and_log("scale_angular", scale_angular_, changes, first_call);
   }
   first_call = false;
   return changes;

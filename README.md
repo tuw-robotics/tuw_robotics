@@ -3,7 +3,8 @@ ROS package collection
 ## packages
 - [tuw](./tuw/README.md): Classes and functions which are making live easier in ROS
 - [tuw_json](./tuw_json/README.md): This package allows to read and write tuw_msgs into json files
-- [tuw_rviz](./tuw_json/README.md): RViz2 plugins for tuw_msgs 
+- [tuw_rviz](./tuw_rviz/README.md): RViz2 plugins for tuw_msgs 
+- [tuw_gamepad](./tuw_gamepad/README.md): RViz2 plugins for tuw_msgs 
 
 ## branches on github.com
 - __ros2__: this is the stable working branch 
