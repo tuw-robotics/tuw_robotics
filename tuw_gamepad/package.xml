@@ -1,26 +1,21 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>tuw_json</name>
-  <version>0.0.2</version>
-  <description>tuw_json helps to read and write msgs in json format</description>
+  <name>tuw_gamepad</name>
+  <version>0.0.0</version>
+  <description>tuw_gamepad is a package designed to publish motion commands based on joy data but without using joy msgs.</description>
   <maintainer email="markus.bader@tuwien.ac.at">Markus Bader</maintainer>
   <license>BSD-3-Clause</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <depend>rclcpp</depend>
-  <depend>rclcpp_components</depend>
-
-  <build_depend>tuw_object_msgs</build_depend>
-  <build_depend>tuw_graph_msgs</build_depend>
-  <build_depend>tuw_object_map_msgs</build_depend>
-  <build_depend>libjsoncpp-dev</build_depend>
+  <depend>geometry_msgs</depend>
+  <depend>tuw</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
 
-  <build_export_depend>libjsoncpp-dev</build_export_depend>
   <export>
     <build_type>ament_cmake</build_type>
   </export>
