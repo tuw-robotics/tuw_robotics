@@ -49,6 +49,7 @@ namespace tuw_gamepad
     int axis_angular_y_;       /// static parameter: axis id of y rotation
     int axis_linear_z_;        /// static parameter: axis id of z velocity
     int axis_angular_z_;       /// static parameter: axis id of z rotation
+    bool debug_;               /// static parameter: On true it prints changes on the joystick
 
     void declare_parameters();      // declare parameters
     void read_static_parameters();  // ready the static parameters
