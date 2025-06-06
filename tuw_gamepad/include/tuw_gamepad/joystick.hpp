@@ -26,7 +26,7 @@ public:
          * Constructor
          * @param device device to use as joystick
          */
-  Joystick(const std::string & device = "/dev/input/js0");
+  explicit Joystick(const std::string & device = "/dev/input/js0");
         /**
          * Attempt to open the device
          * @param msg information on the open attempt
