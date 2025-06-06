@@ -10,6 +10,7 @@
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <exec_depend>tuw</exec_depend>
+  <exec_depend>tuw_gamepad</exec_depend>
   <exec_depend>tuw_json</exec_depend>
   <exec_depend>tuw_rviz</exec_depend>
 
