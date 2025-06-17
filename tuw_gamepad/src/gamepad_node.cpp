@@ -124,6 +124,7 @@ void Gamepad::declare_parameters()
   declare_parameters_with_description("flip_angular_when_reversing", false, "On true it flips the angular velocity when reversing");
 
   declare_parameters_with_description("button_deadman", 4, "button id deadman", 0, 8, 1);
+  declare_parameters_with_description("button_fast", 5, "button id fast", 0, 8, 1);
   declare_parameters_with_description("lx", 4, "axis linear x  (-1 means not used)", -1, 8, 1);
   declare_parameters_with_description("ax", -1, "axis angular x (-1 means not used)", -1, 8, 1);
   declare_parameters_with_description("ly", -1, "axis linear y  (-1 means not used)", -1, 8, 1);
@@ -154,6 +155,8 @@ bool Gamepad::read_dynamic_parameters()
     update_parameter_and_log("scale_linear", scale_linear_, changes, first_call);
     update_parameter_and_log("scale_angular", scale_angular_, changes, first_call);
     update_parameter_and_log("flip_angular_when_reversing", flip_angular_when_reversing_, changes, first_call);
+
+    last_call = current_call;
   }
   first_call = false;
   return changes;
