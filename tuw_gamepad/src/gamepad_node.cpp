@@ -83,6 +83,18 @@ void Gamepad::on_timer()
     if (axis_angular_z_ >= 0) {
       current_cmd_.twist.angular.z = axes[axis_angular_z_] * scale_angular_;
     }
+    if (flip_angular_when_reversing_ && current_cmd_.twist.linear.x < 0.0) {
+      current_cmd_.twist.angular.z = - current_cmd_.twist.angular.z;
+    }
+
+    if (buttons[button_fast_]) {
+      current_cmd_.twist.linear.x *= 2.0;
+      current_cmd_.twist.linear.y *= 2.0;
+      current_cmd_.twist.linear.z *= 2.0;
+      current_cmd_.twist.angular.x *= 2.0;
+      current_cmd_.twist.angular.y *= 2.0;
+      current_cmd_.twist.angular.z *= 2.0;
+    }
   }
   if (debug_ & state_changed) {
     RCLCPP_INFO(this->get_logger(), "\n%s", joystick_->state().c_str());
@@ -109,6 +121,7 @@ void Gamepad::declare_parameters()
   declare_parameters_with_description("use_stamped_velocity", false,
     "On true it uses TwistStamped messages, otherwise Twist!");
   declare_parameters_with_description("debug", false, "On true it prints changes on the joystick");
+  declare_parameters_with_description("flip_angular_when_reversing", false, "On true it flips the angular velocity when reversing");
 
   declare_parameters_with_description("button_deadman", 4, "button id deadman", 0, 8, 1);
   declare_parameters_with_description("lx", 4, "axis linear x  (-1 means not used)", -1, 8, 1);
@@ -131,6 +144,7 @@ bool Gamepad::read_dynamic_parameters()
   if (first_call || ((current_call - last_call)).seconds() > 1.0) {
     update_parameter_and_log("rate", rate_, changes, first_call);
     update_parameter_and_log("button_deadman", button_deadman_, changes, first_call);
+    update_parameter_and_log("button_fast", button_fast_, changes, first_call);
     update_parameter_and_log("lx", axis_linear_x_, changes, first_call);
     update_parameter_and_log("ax", axis_angular_x_, changes, first_call);
     update_parameter_and_log("ly", axis_linear_y_, changes, first_call);
@@ -139,6 +153,7 @@ bool Gamepad::read_dynamic_parameters()
     update_parameter_and_log("az", axis_angular_z_, changes, first_call);
     update_parameter_and_log("scale_linear", scale_linear_, changes, first_call);
     update_parameter_and_log("scale_angular", scale_angular_, changes, first_call);
+    update_parameter_and_log("flip_angular_when_reversing", flip_angular_when_reversing_, changes, first_call);
   }
   first_call = false;
   return changes;

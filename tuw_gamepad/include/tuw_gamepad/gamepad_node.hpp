@@ -41,6 +41,7 @@ private:
   std::string device_;          /// static parameter: Joystick device default "/dev/input/js0"
   bool use_stamped_velocity_;    /// static parameter: On true it uses TwistStamped messages, otherwise Twist!
   int button_deadman_;         /// static parameter: deadmean button id
+  int button_fast_;          /// static parameter: fast button id
   double scale_linear_;        /// static parameter: scale in linear  [m/s]
   double scale_angular_;       /// static parameter: scale in rotation  [rad/s]
   int axis_linear_x_;          /// static parameter: axis id of x velocity
@@ -50,6 +51,7 @@ private:
   int axis_linear_z_;          /// static parameter: axis id of z velocity
   int axis_angular_z_;         /// static parameter: axis id of z rotation
   bool debug_;                 /// static parameter: On true it prints changes on the joystick
+  bool flip_angular_when_reversing_; /// static parameter: On true it flips the angular velocity when reversing
 
   void declare_parameters();        // declare parameters
   void read_static_parameters();    // ready the static parameters

@@ -14,7 +14,9 @@ ros2 run tuw_gamepad gamepad_node --ros-args -p use_stamped_velocity:=true -p de
 * __device__: default /dev/input/js0, Joystick device
 * __use_stamped_velocity__: default false, On true it uses **TwistStamped** messages, otherwise **Twist**!
 * __debug__: default false, On true it prints changes on the joystick
-* __button_deadman__: default 4, button id deadman
+* __flip_angular_when_reversing__: default false, On true it flips the angular velocity when reversing
+* __button_deadman__: default 4, button id deadman, if not pressed, no motion is published
+* __button_fast__: default 5, button id fast, if pressed, the robot moves 2x faster
 * __lx__: default 4, axis linear x  (-1 means not used)
 * __ax__: default -1, axis angular x (-1 means not used)
 * __ly__: default -1, axis linear y  (-1 means not used)
