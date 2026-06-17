@@ -1,5 +1,5 @@
 # tuw_robotics
-ROS package collection
+ROS2 package collection for the tuw robotics lab. 
 
 ## packages
 - [tuw](./tuw/README.md): Classes and functions which are making life easier in ROS2
