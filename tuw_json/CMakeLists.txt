@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.8...3.28)
 project(tuw_json)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -19,9 +19,6 @@ target_compile_features(tuw_json PUBLIC c_std_99 cxx_std_17)  # Require C99 and 
 target_include_directories(tuw_json PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
-ament_target_dependencies(
-  tuw_json
-)
 target_link_libraries(tuw_json jsoncpp_lib)
 
 
@@ -43,11 +40,7 @@ target_include_directories(example_json PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
 target_compile_features(example_json PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
-ament_target_dependencies(
-  example_json
-  "rclcpp"
-)
-target_link_libraries(example_json jsoncpp_lib tuw_json)
+target_link_libraries(example_json jsoncpp_lib tuw_json ${rclcpp_TARGETS})
 
 install(TARGETS example_json
   DESTINATION lib/${PROJECT_NAME})
@@ -71,12 +64,11 @@ if(BUILD_TESTING)
     tests/tuw_object_msgs.cpp
   )
   target_include_directories(unittest PUBLIC src/)  # Need to specify directories in order to #include from them in the test
-  target_link_libraries(unittest ${PROJECT_NAME})
-  ament_target_dependencies(
-    unittest
-    "tuw_graph_msgs"
-    "tuw_object_map_msgs"
-    "tuw_object_msgs"
+  target_link_libraries(unittest
+    ${PROJECT_NAME}
+    ${tuw_graph_msgs_TARGETS}
+    ${tuw_object_map_msgs_TARGETS}
+    ${tuw_object_msgs_TARGETS}
   )
 endif()
 

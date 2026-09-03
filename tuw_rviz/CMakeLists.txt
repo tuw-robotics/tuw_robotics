@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.8...3.28)
 project(tuw_rviz)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -65,16 +65,15 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
 target_compile_definitions(${PROJECT_NAME} PRIVATE "RVIZ_DEFAULT_PLUGINS_BUILDING_LIBRARY")
 
 
-ament_target_dependencies(${PROJECT_NAME}
-  PUBLIC
-  rcpputils
-  rclcpp
-  rviz_common
-  rviz_rendering
-  rviz_default_plugins
-  yaml_cpp_vendor
-  tuw_object_msgs
-  tuw_graph_msgs
+target_link_libraries(${PROJECT_NAME} PUBLIC
+  ${rcpputils_TARGETS}
+  ${rclcpp_TARGETS}
+  ${rviz_common_TARGETS}
+  ${rviz_rendering_TARGETS}
+  ${rviz_default_plugins_TARGETS}
+  ${yaml_cpp_vendor_TARGETS}
+  ${tuw_object_msgs_TARGETS}
+  ${tuw_graph_msgs_TARGETS}
 )
 
 # Export the plugin to be imported by rviz2
