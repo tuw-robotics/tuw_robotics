@@ -131,8 +131,8 @@ void Gamepad::declare_parameters()
   declare_parameters_with_description("ay", -1, "axis angular y (-1 means not used)", -1, 8, 1);
   declare_parameters_with_description("lz", -1, "axis linear z  (-1 means not used)", -1, 8, 1);
   declare_parameters_with_description("az", 0, "axis angular z (-1 means not used)", -1, 8, 1);
-  declare_parameters_with_description("scale_linear", -1.0, "scale linear", -10.0, 10.0, 0.1);
-  declare_parameters_with_description("scale_angular", -1.0, "scale roation", -10.0, 10.0, 0.1);
+  declare_parameters_with_description("scale_linear", -1.0, "scale linear", -10.0, 10.0, 0.01);
+  declare_parameters_with_description("scale_angular", -1.0, "scale roation", -10.0, 10.0, 0.01);
 }
 
 bool Gamepad::read_dynamic_parameters()
