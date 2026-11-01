@@ -44,6 +44,8 @@ private:
   int button_fast_;          /// static parameter: fast button id
   double scale_linear_;        /// static parameter: scale in linear  [m/s]
   double scale_angular_;       /// static parameter: scale in rotation  [rad/s]
+  bool invert_linear_;         /// static parameter: On true it inverts the linear axes
+  bool invert_angular_;        /// static parameter: On true it inverts the angular axes
   int axis_linear_x_;          /// static parameter: axis id of x velocity
   int axis_angular_x_;         /// static parameter: axis id of x rotation
   int axis_linear_y_;          /// static parameter: axis id of y velocity

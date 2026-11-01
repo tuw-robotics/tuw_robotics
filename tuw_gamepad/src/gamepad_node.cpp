@@ -64,24 +64,27 @@ void Gamepad::on_timer()
   current_cmd_.twist.angular.y = 0.0;
   current_cmd_.twist.angular.z = 0.0;
   if (buttons[button_deadman_]) {
+    const double scale_linear = invert_linear_ ? -scale_linear_ : scale_linear_;
+    const double scale_angular = invert_angular_ ? -scale_angular_ : scale_angular_;
+
     if (axis_linear_x_ >= 0) {
-      current_cmd_.twist.linear.x = axes[axis_linear_x_] * scale_linear_;
+      current_cmd_.twist.linear.x = axes[axis_linear_x_] * scale_linear;
     }
     if (axis_linear_y_ >= 0) {
-      current_cmd_.twist.linear.y = axes[axis_linear_y_] * scale_linear_;
+      current_cmd_.twist.linear.y = axes[axis_linear_y_] * scale_linear;
     }
     if (axis_linear_z_ >= 0) {
-      current_cmd_.twist.linear.z = axes[axis_linear_z_] * scale_linear_;
+      current_cmd_.twist.linear.z = axes[axis_linear_z_] * scale_linear;
     }
 
     if (axis_angular_x_ >= 0) {
-      current_cmd_.twist.angular.x = axes[axis_angular_x_] * scale_angular_;
+      current_cmd_.twist.angular.x = axes[axis_angular_x_] * scale_angular;
     }
     if (axis_angular_y_ >= 0) {
-      current_cmd_.twist.angular.y = axes[axis_angular_y_] * scale_angular_;
+      current_cmd_.twist.angular.y = axes[axis_angular_y_] * scale_angular;
     }
     if (axis_angular_z_ >= 0) {
-      current_cmd_.twist.angular.z = axes[axis_angular_z_] * scale_angular_;
+      current_cmd_.twist.angular.z = axes[axis_angular_z_] * scale_angular;
     }
     if (flip_angular_when_reversing_ && current_cmd_.twist.linear.x < 0.0) {
       current_cmd_.twist.angular.z = - current_cmd_.twist.angular.z;
@@ -131,8 +134,12 @@ void Gamepad::declare_parameters()
   declare_parameters_with_description("ay", -1, "axis angular y (-1 means not used)", -1, 8, 1);
   declare_parameters_with_description("lz", -1, "axis linear z  (-1 means not used)", -1, 8, 1);
   declare_parameters_with_description("az", 0, "axis angular z (-1 means not used)", -1, 8, 1);
-  declare_parameters_with_description("scale_linear", -1.0, "scale linear", -10.0, 10.0, 0.01);
-  declare_parameters_with_description("scale_angular", -1.0, "scale roation", -10.0, 10.0, 0.01);
+  declare_parameters_with_description("scale_linear", 1.0, "scale linear [m/s]", 0.0, 10.0, 0.01);
+  declare_parameters_with_description("scale_angular", 1.0, "scale rotation [rad/s]", 0.0, 10.0, 0.01);
+  declare_parameters_with_description("invert_linear", true,
+    "On true it inverts the linear axes, the kernel joystick API reports stick forward as negative");
+  declare_parameters_with_description("invert_angular", true,
+    "On true it inverts the angular axes, the kernel joystick API reports stick right as negative");
 }
 
 bool Gamepad::read_dynamic_parameters()
@@ -154,6 +161,8 @@ bool Gamepad::read_dynamic_parameters()
     update_parameter_and_log("az", axis_angular_z_, changes, first_call);
     update_parameter_and_log("scale_linear", scale_linear_, changes, first_call);
     update_parameter_and_log("scale_angular", scale_angular_, changes, first_call);
+    update_parameter_and_log("invert_linear", invert_linear_, changes, first_call);
+    update_parameter_and_log("invert_angular", invert_angular_, changes, first_call);
     update_parameter_and_log("flip_angular_when_reversing", flip_angular_when_reversing_, changes, first_call);
 
     last_call = current_call;
