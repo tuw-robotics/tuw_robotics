@@ -1,0 +1,20 @@
+image_width: 1536
+image_height: 864
+camera_name: pi_module3_wide
+camera_matrix:
+  rows: 3
+  cols: 3
+  data: [1003.196808, 0.0, 786.527283, 0.0, 1002.962896, 404.890246, 0.0, 0.0, 1.0]
+distortion_model: plumb_bob
+distortion_coefficients:
+  rows: 1
+  cols: 5
+  data: [-0.081480, 0.094414, -0.004091, 0.012825, 0.0]
+rectification_matrix:
+  rows: 3
+  cols: 3
+  data: [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]
+projection_matrix:
+  rows: 3
+  cols: 4
+  data: [996.340912, 0.0, 808.200298, 0.0, 0.0, 1011.250172, 401.107551, 0.0, 0.0, 0.0, 1.0, 0.0]

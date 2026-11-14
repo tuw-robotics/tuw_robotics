@@ -1,0 +1,80 @@
+tuw_camera:
+  camera: {
+    type: string,
+    description: "Camera ID to use, or empty to use any camera.",
+    default_value: "",
+    read_only: true
+  }
+  camera_info_name: {
+    type: string,
+    description: "Camera name to use for camera_info topic, empty to disable camera info topic.",
+    default_value: "",
+    read_only: true
+  }
+  camera_info_url: {
+    type: string,
+    description: "Camera name to use for camera_info topic, empty to use default url.",
+    default_value: "",
+    read_only: true
+  }
+  camera_info_topic: {
+    type: string,
+    description: "Topic name for camera_info (relative names are resolved in the node namespace).",
+    default_value: "camera_info",
+    read_only: true,
+    validation: {
+      not_empty<>: []
+    }
+  }
+  frame_id: {
+    type: string,
+    description: "Frame ID to publish in the message header",
+    default_value: "",
+    read_only: true
+  }
+  stream_roles: {
+    type: string_array,
+    default_value: [ "video" ],
+    read_only: true,
+    validation: {
+      size_gt<>: [0],
+      unique<>: null,
+      subset_of<>: [["raw", "viewfinder", "still", "video"]]
+    }
+  }
+  streams:
+    __map_stream_roles:
+      width: {
+        type: int,
+        default_value: 0,
+        read_only: true
+      }
+      height: {
+        type: int,
+        default_value: 0,
+        read_only: true
+      }
+      format: {
+        type: string,
+        default_value: "",
+        read_only: true
+      }
+      topic: {
+        type: string,
+        description: "Image topic name (relative names are resolved in the node namespace).",
+        default_value: "image",
+        read_only: true,
+        validation: {
+          not_empty<>: []
+        }
+      }
+      sub_topic: {
+        type: string,
+        default_value: "",
+        read_only: true
+      }
+      target_format: {
+        type: string,
+        default_value: "",
+        read_only: true
+      }
