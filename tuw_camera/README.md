@@ -51,15 +51,44 @@ available IDs at startup (`Available cameras:`).
 The package provides two composable nodes, meant to run together inside one
 `component_container`:
 
-- **`CaptureNode`** (executable `tuw_camera_capture`) — drives libcamera
+- **`CaptureNode`** (executable `camera_capture`) — drives libcamera
   directly, configures one or more streams, and publishes raw or
   compressed `sensor_msgs/Image` messages plus (optionally) `camera_info`.
-- **`TransportNode`** (executable `tuw_camera_transport`) — subscribes to
+- **`TransportNode`** (executable `camera_transport`) — subscribes to
   the raw image published by `CaptureNode` and republishes it through all
   available `image_transport` plugins (e.g. `compressed`, `theora`), so
   downstream tools can pick whichever transport they need.
 
 ## Launching
+
+The package has two launch files.
+
+| Launch file | Nodes | Processes | Camera parameters |
+|---|---|---|---|
+| [`demo.launch.py`](launch/demo.launch.py) | `CaptureNode` (`camera_capture`), `TransportNode` (`camera_transport`) | **separate processes**, no rectification | launch arguments |
+| [`composed.launch.py`](launch/composed.launch.py) | `CaptureNode`, `TransportNode`, `RectifyNode` (rectification) | all in **one process** (component container, intra-process communication) | YAML file in [`config/`](config) |
+
+### demo.launch.py
+
+```bash
+ros2 launch tuw_camera demo.launch.py
+```
+
+Should work out of the box, and most settings can be given as launch
+arguments (see [Demo launch file with format arguments](#demo-launch-file-with-format-arguments)).
+It is slow, though, because the nodes run in separate processes.
+
+### composed.launch.py
+
+In `composed.launch.py` the images are passed between the nodes inside the
+process without going through DDS, which is faster and avoids the problems
+with large images described in
+[Large images and Fast DDS](#large-images-and-fast-dds).
+
+`composed.launch.py` needs a configuration file that matches your camera
+(format, resolution, calibration): pick one from [`config/`](config) with
+`config:=<file>` or add your own (see
+[Configuration files](#configuration-files)).
 
 ```bash
 ros2 launch tuw_camera composed.launch.py
@@ -146,22 +175,29 @@ looks for `camera_info` next to its image topic.
 
 ### Demo launch file with format arguments
 
-[`launch/demo.launch.py`](launch/demo.launch.py) starts only `CaptureNode`
-as the standalone executable `tuw_camera_capture` (no component container,
-no `TransportNode` or `RectifyNode`), sets the camera
-parameters directly in the launch file (no YAML file) and exposes the stream
-format and camera calibration as launch arguments:
+[`launch/demo.launch.py`](launch/demo.launch.py) starts `CaptureNode` and
+`TransportNode` as the standalone executables `camera_capture` and
+`camera_transport` (two processes, no component container, no
+`RectifyNode`), sets the camera parameters directly in the launch file (no
+YAML file) and exposes the stream format, resolution and camera calibration
+as launch arguments:
 
 | Argument | Default | Description |
 |---|---|---|
-| `format` | `RGB888` | libcamera pixel format (`streams.video.format`) |
-| `target_format` | `bgr8` | ROS image encoding (`streams.video.target_format`) |
+| `format` | `YUYV` | libcamera pixel format (`streams.video.format`) |
+| `target_format` | `mono8` | ROS image encoding (`streams.video.target_format`) |
+| `resolution` | `""` | `<width>x<height>`, e.g. `1920x1080`. Empty uses the camera default. |
+| `namespace` | `camera` | Namespace of both nodes and their topics (`/<namespace>/image`, …) |
+| `transport_launch` | `true` | Start `camera_transport` (compressed versions of `/<namespace>/image`) |
 | `frame_id` | `camera_link` | `frame_id` in the header of published image/camera_info messages |
 | `camera_info_name` | `pi_module3_wide` | Camera name for `camera_info`; must match `camera_name` in the calibration file. Empty disables `camera_info`. |
 | `camera_info_url` | `""` | Calibration file (`package://` or `file://` URL). Empty uses camera_info_manager's default `~/.ros/camera_info/<camera_info_name>.yaml`. |
 
-The stream is fixed to 1536x864 on the `video` role, published on
-`/camera/image`, with `camera_info` on `/camera/camera_info`. By default no
+The stream uses the `video` role and is published on `/camera/image`
+(compressed versions on `/camera/image/compressed`, … from `TransportNode`),
+with `camera_info` on `/camera/camera_info`. Since both nodes run as separate
+processes, every image crosses DDS; for large images set the
+[Fast DDS profile](#large-images-and-fast-dds). By default no
 calibration file from the package is loaded: the node looks for
 `~/.ros/camera_info/pi_module3_wide.yaml`, and publishes an uncalibrated
 `camera_info` if it doesn't exist. This is also where **COMMIT** in the
@@ -171,12 +207,21 @@ calibrator saves a new calibration. To use the packaged calibration
 as `camera_info_url` (see the example below). If you change the resolution
 you need a matching calibration file.
 
-Only the raw image is published. For compressed topics or a rectified
-image use [`composed.launch.py`](#launching).
+For a rectified image, or all nodes in one container with intra-process
+communication, use [`composed.launch.py`](#launching).
 
 ```bash
-# Colour (default): RGB888 -> bgr8
+# Default: YUYV -> mono8, camera default resolution
 ros2 launch tuw_camera demo.launch.py
+
+# Colour: RGB888 -> bgr8 (Pi camera modules)
+ros2 launch tuw_camera demo.launch.py format:=RGB888 target_format:=bgr8
+
+# Fixed resolution
+ros2 launch tuw_camera demo.launch.py resolution:=1280x720
+
+# Colour from a USB webcam: MJPEG decoded to bgr8
+ros2 launch tuw_camera demo.launch.py format:=MJPEG target_format:=bgr8 resolution:=1920x1080
 
 # YUYV, no conversion
 ros2 launch tuw_camera demo.launch.py format:=YUYV target_format:=yuyv
@@ -189,7 +234,7 @@ ros2 launch tuw_camera demo.launch.py frame_id:=front_camera_link
 
 # Greyscale (mono8) with the pi_module3_wide calibration, all set explicitly (camera_info_name must match camera_name in the file)
 ros2 launch tuw_camera demo.launch.py \
-  format:=YUV420 target_format:=mono8 \
+  format:=YUV420 target_format:=mono8 resolution:=1536x864 \
   camera_info_url:=package://tuw_camera/config/camera_calibration/pi_module3_wide.yaml \
   camera_info_name:=pi_module3_wide
 ```
@@ -210,7 +255,7 @@ For debugging it can also be run directly, passing parameters via
 dotted names:
 
 ```bash
-ros2 run tuw_camera tuw_camera_capture --ros-args \
+ros2 run tuw_camera camera_capture --ros-args \
   -r __ns:=/camera \
   -p frame_id:=camera_link \
   -p camera_info_name:=pi_module3_wide \
@@ -225,7 +270,7 @@ ros2 run tuw_camera tuw_camera_capture --ros-args \
 Or load one of the config files:
 
 ```bash
-ros2 run tuw_camera tuw_camera_capture --ros-args \
+ros2 run tuw_camera camera_capture --ros-args \
   -r __ns:=/camera \
   --params-file $(ros2 pkg prefix tuw_camera)/share/tuw_camera/config/dell_precision_3591_yuyv_to_mono8.yaml
 ```

@@ -36,11 +36,11 @@ add_subdirectory(src/transport)
 # Register nodes
 rclcpp_components_register_node(tuw_camera_capture_node
   PLUGIN "tuw_camera::CaptureNode"
-  EXECUTABLE tuw_camera_capture)
+  EXECUTABLE camera_capture)
 
 rclcpp_components_register_node(tuw_camera_transport_node
   PLUGIN "tuw_camera::TransportNode"
-  EXECUTABLE tuw_camera_transport)
+  EXECUTABLE camera_transport)
 
 # Export libraries
 ament_export_targets(export_tuw_camera)
