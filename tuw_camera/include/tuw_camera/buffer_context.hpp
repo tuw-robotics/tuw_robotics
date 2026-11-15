@@ -3,6 +3,7 @@
 
 #include <libcamera/libcamera.h>
 #include <opencv2/core/mat.hpp>
+#include <span>
 #include <sys/mman.h>
 #include <vector>
 
@@ -19,7 +20,7 @@ class BufferContext {
     BufferContext(BufferContext &&other);
     BufferContext &operator=(BufferContext &&other);
 
-    libcamera::Span<unsigned char> data() const;
+    std::span<unsigned char> data() const;
     cv::Mat mat() const;
     size_t stream_idx() const;
 

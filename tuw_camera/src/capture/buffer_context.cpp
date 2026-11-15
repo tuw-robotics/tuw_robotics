@@ -47,7 +47,7 @@ BufferContext &BufferContext::operator=(BufferContext &&other) {
     return *this;
 }
 
-libcamera::Span<unsigned char> BufferContext::data() const {
+std::span<unsigned char> BufferContext::data() const {
     return {(unsigned char *)mem, size};
 }
 

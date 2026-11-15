@@ -68,7 +68,9 @@ class CaptureNode : public rclcpp::Node {
         if (!params.camera_info_name.empty()) {
             auto cam_info_manager =
                 std::make_shared<camera_info_manager::CameraInfoManager>(
-                    this, params.camera_info_name, params.camera_info_url,
+                    get_node_base_interface(), get_node_services_interface(),
+                    get_node_logging_interface(), params.camera_info_name,
+                    params.camera_info_url, rclcpp::SystemDefaultsQoS(),
                     // service name is built as ns + "/set_camera_info"; an
                     // empty ns would put it at the root (/set_camera_info)
                     // instead of next to the camera topics
