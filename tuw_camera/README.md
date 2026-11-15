@@ -189,6 +189,7 @@ as launch arguments:
 | `resolution` | `""` | `<width>x<height>`, e.g. `1920x1080`. Empty uses the camera default. |
 | `namespace` | `camera` | Namespace of both nodes and their topics (`/<namespace>/image`, …) |
 | `transport_launch` | `true` | Start `camera_transport` (compressed versions of `/<namespace>/image`) |
+| `view_launch` | `false` | Start `rqt_image_view` subscribed to `/<namespace>/image`. `rqt_image_view` is not a dependency of this package: install it first with `sudo apt install ros-$ROS_DISTRO-rqt-image-view`. |
 | `frame_id` | `camera_link` | `frame_id` in the header of published image/camera_info messages |
 | `camera_info_name` | `pi_module3_wide` | Camera name for `camera_info`; must match `camera_name` in the calibration file. Empty disables `camera_info`. |
 | `camera_info_url` | `""` | Calibration file (`package://` or `file://` URL). Empty uses camera_info_manager's default `~/.ros/camera_info/<camera_info_name>.yaml`. |

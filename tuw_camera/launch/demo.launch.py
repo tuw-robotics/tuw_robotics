@@ -38,6 +38,13 @@ def generate_launch_description():
         choices=['true', 'false'],
         description='Start camera_transport (compressed image topics)')
 
+    view_launch_arg = DeclareLaunchArgument(
+        'view_launch',
+        default_value='false',
+        choices=['true', 'false'],
+        description='Start rqt_image_view subscribed to /<namespace>/image '
+                    '(not a package dependency, install ros-$ROS_DISTRO-rqt-image-view first)')
+
     resolution_arg = DeclareLaunchArgument(
         'resolution', default_value='',
         description='image resolution as <width>x<height> (e.g. 1920x1080); '
@@ -52,6 +59,7 @@ def generate_launch_description():
         resolution_arg,
         namespace_arg,
         transport_launch_arg,
+        view_launch_arg,
         OpaqueFunction(function=launch_setup)
     ])
 
@@ -100,4 +108,17 @@ def launch_setup(context):
         output='screen',
         condition=IfCondition(LaunchConfiguration('transport_launch'))
     )
-    return [capture_node, transport_node]
+
+    # image viewer, subscribed to the raw image of the capture node
+    namespace = LaunchConfiguration('namespace').perform(context).strip('/')
+    image_topic = f'/{namespace}/image' if namespace else '/image'
+    view_node = Node(
+        package='rqt_image_view',
+        executable='rqt_image_view',
+        name='image_view',
+        namespace=LaunchConfiguration('namespace'),
+        arguments=[image_topic],
+        output='screen',
+        condition=IfCondition(LaunchConfiguration('view_launch'))
+    )
+    return [capture_node, transport_node, view_node]
