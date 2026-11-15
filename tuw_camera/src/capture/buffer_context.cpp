@@ -54,4 +54,4 @@ cv::Mat BufferContext::mat() const {return {1, (int)size, CV_8UC1, mem};}
 
 size_t BufferContext::stream_idx() const {return stream_index;}
 
-}   // namespace tuw_camera
+}  // namespace tuw_camera

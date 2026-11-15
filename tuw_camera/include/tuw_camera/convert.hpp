@@ -43,6 +43,6 @@ std::optional<FormatMapping> get_format_mapping(libcamera::PixelFormat fmt, std:
 
 std::vector<std::string> get_target_formats(libcamera::PixelFormat fmt);
 
-}   // namespace tuw_camera
+}  // namespace tuw_camera
 
 #endif  // TUW_CAMERA__LIBCAMERA_CONVERT_HPP_

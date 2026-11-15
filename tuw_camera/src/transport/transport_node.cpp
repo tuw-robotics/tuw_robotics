@@ -52,7 +52,7 @@ private:
   rclcpp::SubscriptionBase::SharedPtr sub;
 };
 
-}   // namespace tuw_camera
+}  // namespace tuw_camera
 
 #include <rclcpp_components/register_node_macro.hpp>
 RCLCPP_COMPONENTS_REGISTER_NODE(tuw_camera::TransportNode)

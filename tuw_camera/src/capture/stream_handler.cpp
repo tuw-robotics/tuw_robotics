@@ -12,9 +12,13 @@ namespace tuw_camera
 std::string topic_name(const Params::Streams::MapStreamRoles & params, std::string suffix = "")
 {
   std::string topic;
-  if (!params.sub_topic.empty()) {topic += params.sub_topic + "/";}
+  if (!params.sub_topic.empty()) {
+    topic += params.sub_topic + "/";
+  }
   topic += params.topic;
-  if (!suffix.empty()) {topic += "/" + suffix;}
+  if (!suffix.empty()) {
+    topic += "/" + suffix;
+  }
   return topic;
 }
 
@@ -290,7 +294,9 @@ StreamHandler::Ptr create_stream_handler(rclcpp::Node * node, const libcamera::S
     } else {
       error << ". Supported target formats: ";
       for (size_t i = 0; i < target_formats.size(); ++i) {
-        if (i > 0) {error << ", ";}
+        if (i > 0) {
+          error << ", ";
+        }
         error << target_formats[i];
       }
     }

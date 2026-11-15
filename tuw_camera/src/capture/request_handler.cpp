@@ -71,12 +71,16 @@ void RequestHandler::start()
 
 void RequestHandler::handle(libcamera::Request * request)
 {
-  if (request->status() == libcamera::Request::RequestCancelled) {return;}
+  if (request->status() == libcamera::Request::RequestCancelled) {
+    return;
+  }
 
   RCLCPP_DEBUG_STREAM(logger, "Received completed request " << request->cookie() << " on thread: " << std::this_thread::get_id());
 
   auto & ctx = request_ctx.at(request->cookie());
-  if (ctx.waiting) {throw std::runtime_error("assertion failed: request not processed");}
+  if (ctx.waiting) {
+    throw std::runtime_error("assertion failed: request not processed");
+  }
   ctx.waiting = true;
   waiting_requests++;
   gc->trigger();

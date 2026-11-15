@@ -125,7 +125,9 @@ private:
       camera = cam_manager->cameras().at(0);
     } else {
       camera = cam_manager->get(camera_id);
-      if (!camera) {throw std::runtime_error("Camera with id " + camera_id + " not found.");}
+      if (!camera) {
+        throw std::runtime_error("Camera with id " + camera_id + " not found.");
+      }
     }
 
     RCLCPP_INFO(get_logger(), "Selected camera: %s", camera->id().c_str());
@@ -137,7 +139,9 @@ private:
   std::string camera_info_service_ns() const
   {
     std::string ns = get_namespace();
-    if (!ns.empty() && ns.back() == '/') {ns.pop_back();}
+    if (!ns.empty() && ns.back() == '/') {
+      ns.pop_back();
+    }
     return ns;
   }
 
@@ -169,7 +173,9 @@ private:
           // continuous range instead of discrete sizes
           line << " " << formats.range(fmt).toString();
         } else {
-          for (const auto & size : sizes) {line << " " << size.toString();}
+          for (const auto & size : sizes) {
+            line << " " << size.toString();
+          }
         }
         // ROS encodings this pixel format can be published as
         // (usable as target_format), e.g. MJPEG -> bgr8
@@ -178,7 +184,9 @@ private:
         if (targets.empty()) {
           line << "(none supported)";
         } else {
-          for (size_t i = 0; i < targets.size(); ++i) {line << (i ? ", " : "") << targets[i];}
+          for (size_t i = 0; i < targets.size(); ++i) {
+            line << (i ? ", " : "") << targets[i];
+          }
         }
         RCLCPP_INFO(get_logger(), "%s", line.str().c_str());
       }
@@ -203,9 +211,15 @@ private:
       const auto stream_role = params.stream_roles.at(i);
       const auto & stream_params = params.streams.stream_roles_map.at(stream_role);
 
-      if (stream_params.width) {stream_cfg.size.width = stream_params.width;}
-      if (stream_params.height) {stream_cfg.size.height = stream_params.height;}
-      if (!stream_params.format.empty()) {stream_cfg.pixelFormat = libcamera::PixelFormat::fromString(stream_params.format);}
+      if (stream_params.width) {
+        stream_cfg.size.width = stream_params.width;
+      }
+      if (stream_params.height) {
+        stream_cfg.size.height = stream_params.height;
+      }
+      if (!stream_params.format.empty()) {
+        stream_cfg.pixelFormat = libcamera::PixelFormat::fromString(stream_params.format);
+      }
     }
 
     auto status = config->validate();
@@ -263,12 +277,14 @@ private:
       }
     }
 
-    if (num_requests == 0 || num_requests == SIZE_MAX) {throw std::runtime_error("No buffers allocated.");}
+    if (num_requests == 0 || num_requests == SIZE_MAX) {
+      throw std::runtime_error("No buffers allocated.");
+    }
     return num_requests;
   }
 };
 
-}   // namespace tuw_camera
+}  // namespace tuw_camera
 
 #include <rclcpp_components/register_node_macro.hpp>
 RCLCPP_COMPONENTS_REGISTER_NODE(tuw_camera::CaptureNode)

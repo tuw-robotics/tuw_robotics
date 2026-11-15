@@ -33,6 +33,6 @@ private:
   size_t stream_index;
 };
 
-}   // namespace tuw_camera
+}  // namespace tuw_camera
 
 #endif  // TUW_CAMERA__BUFFER_CONTEXT_HPP_
