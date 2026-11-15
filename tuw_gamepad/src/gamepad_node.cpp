@@ -87,7 +87,7 @@ void Gamepad::on_timer()
       current_cmd_.twist.angular.z = axes[axis_angular_z_] * scale_angular;
     }
     if (flip_angular_when_reversing_ && current_cmd_.twist.linear.x < 0.0) {
-      current_cmd_.twist.angular.z = - current_cmd_.twist.angular.z;
+      current_cmd_.twist.angular.z = -current_cmd_.twist.angular.z;
     }
 
     if (buttons[button_fast_]) {
