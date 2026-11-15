@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>tuw_camera</name>
+  <version>1.0.0</version>
+  <description>
+    ROS 2 camera driver based on libcamera for USB (UVC) webcams and Raspberry Pi
+    camera modules. Provides composable nodes to capture images, convert them to
+    ROS image encodings (e.g. bgr8, mono8, yuyv, jpeg), publish camera_info with
+    calibration support (set_camera_info), and republish images through all
+    image_transport plugins (e.g. compressed).
+  </description>
+  <maintainer email="markus.bader@tuwien.ac.at">Markus Bader</maintainer>
+  <license file="LICENSE">BSD-3-Clause</license>
+  <author email="markus.bader@tuwien.ac.at">Markus Bader</author>
+  <author email="matthias.reicher@tuwien.ac.at">Matthias Reicher</author>
+  <author email="jakob.buchsteiner@gmail.com">Jakob Buchsteiner</author>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>pkg-config</buildtool_depend>
+
+  <depend>rclcpp</depend>
+  <depend>rclcpp_components</depend>
+  <depend>rcutils</depend>
+  <depend>std_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>image_transport</depend>
+  <depend>pluginlib</depend>
+  <depend>camera_info_manager</depend>
+  <depend>generate_parameter_library</depend>
+  <depend>libcamera</depend>
+  <depend>libopencv-dev</depend>
+
+  <exec_depend>image_transport_plugins</exec_depend>
+  <exec_depend>image_proc</exec_depend>
+  
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

@@ -1,0 +1,28 @@
+image_width: 1920
+image_height: 1080
+camera_name: dell_precision_3591
+camera_matrix:
+  rows: 3
+  cols: 3
+  data: [1199.3005873363827, 0, 934.43319301354074, 0, 1229.6752577944915, 692.40021213827163, 0, 0, 1]
+distortion_model: plumb_bob
+distortion_coefficients:
+  rows: 1
+  cols: 5
+  data: [0.081413471484163766, -0.053233064625515469, 0.0095253890124414303, -0.013961404864631221, 0]
+rectification_matrix:
+  rows: 3
+  cols: 3
+  data: [1, 0, 0, 0, 1, 0, 0, 0, 1]
+projection_matrix:
+  rows: 3
+  cols: 4
+  data: [1238.1781609563641, 0, 903.51721088276759, 0, 0, 1283.2473849190019, 704.07645271370359, 0, 0, 0, 1, 0]
+binning_x: 0
+binning_y: 0
+roi:
+  x_offset: 0
+  y_offset: 0
+  height: 0
+  width: 0
+  do_rectify: false

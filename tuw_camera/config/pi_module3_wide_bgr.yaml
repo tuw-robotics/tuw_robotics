@@ -1,0 +1,14 @@
+/**:
+  ros__parameters:
+    camera_info_name: pi_module3_wide
+    camera_info_url: package://tuw_camera/config/camera_calibration/pi_module3_wide.yaml
+    camera_info_topic: camera_info
+    frame_id: "camera_link"
+    stream_roles: ["video"]
+    streams:
+      video:
+        topic: image
+        format: RGB888
+        target_format: bgr8
+        width: 1536
+        height: 864
