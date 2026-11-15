@@ -48,38 +48,28 @@ namespace tuw_shape_array
 namespace displays
 {
 
-ShapeArrayDisplaySelectionHandler::ShapeArrayDisplaySelectionHandler(
-  ShapeArrayDisplay * display, rviz_common::DisplayContext * context)
-: SelectionHandler(context),
-  display_(display),
-  frame_property_(nullptr),
-  position_property_(nullptr),
-  orientation_property_(nullptr)
+ShapeArrayDisplaySelectionHandler::ShapeArrayDisplaySelectionHandler(ShapeArrayDisplay * display, rviz_common::DisplayContext * context)
+: SelectionHandler(context), display_(display), frame_property_(nullptr), position_property_(nullptr), orientation_property_(nullptr)
 {
 }
 
-void ShapeArrayDisplaySelectionHandler::createProperties(
-  const rviz_common::interaction::Picked & obj, rviz_common::properties::Property * parent_property)
+void ShapeArrayDisplaySelectionHandler::createProperties(const rviz_common::interaction::Picked & obj, rviz_common::properties::Property * parent_property)
 {
   (void)obj;
-  rviz_common::properties::Property * cat = new rviz_common::properties::Property(
-    "Pose " + display_->getName(), QVariant(), "", parent_property);
+  rviz_common::properties::Property * cat = new rviz_common::properties::Property("Pose " + display_->getName(), QVariant(), "", parent_property);
   properties_.push_back(cat);
 
   frame_property_ = new rviz_common::properties::StringProperty("Frame", "", "", cat);
   frame_property_->setReadOnly(true);
 
-  position_property_ =
-    new rviz_common::properties::VectorProperty("Position", Ogre::Vector3::ZERO, "", cat);
+  position_property_ = new rviz_common::properties::VectorProperty("Position", Ogre::Vector3::ZERO, "", cat);
   position_property_->setReadOnly(true);
 
-  orientation_property_ = new rviz_common::properties::QuaternionProperty(
-    "Orientation", Ogre::Quaternion::IDENTITY, "", cat);
+  orientation_property_ = new rviz_common::properties::QuaternionProperty("Orientation", Ogre::Quaternion::IDENTITY, "", cat);
   orientation_property_->setReadOnly(true);
 }
 
-rviz_common::interaction::V_AABB ShapeArrayDisplaySelectionHandler::getAABBs(
-  const rviz_common::interaction::Picked & obj)
+rviz_common::interaction::V_AABB ShapeArrayDisplaySelectionHandler::getAABBs(const rviz_common::interaction::Picked & obj)
 {
   (void)obj;
   rviz_common::interaction::V_AABB aabbs;

@@ -1,6 +1,7 @@
+#include "tuw_gamepad/gamepad_node.hpp"
+
 #include <filesystem>
 
-#include "tuw_gamepad/gamepad_node.hpp"
 #include "tuw_gamepad/joystick.hpp"
 
 using std::placeholders::_1;
@@ -18,12 +19,10 @@ Gamepad::Gamepad(const std::string & node_name)
 
   if (use_stamped_velocity_) {
     RCLCPP_INFO(this->get_logger(), "stamped velocities");
-    pub_cmd_vel_stamped_ =
-      this->create_publisher<geometry_msgs::msg::TwistStamped>(topic_name_cmd_to_provide_, 10);
+    pub_cmd_vel_stamped_ = this->create_publisher<geometry_msgs::msg::TwistStamped>(topic_name_cmd_to_provide_, 10);
   } else {
     RCLCPP_INFO(this->get_logger(), "unstamped velocities");
-    pub_cmd_vel_ = this->create_publisher<geometry_msgs::msg::Twist>(topic_name_cmd_to_provide_,
-      10);
+    pub_cmd_vel_ = this->create_publisher<geometry_msgs::msg::Twist>(topic_name_cmd_to_provide_, 10);
   }
 
   joystick_ = std::make_shared<tuw::Joystick>(device_);
@@ -41,9 +40,9 @@ Gamepad::Gamepad(const std::string & node_name)
 void Gamepad::on_timer()
 {
   // RCLCPP_INFO(this->get_logger(), "on_timer");
-  static std::vector<bool> last_buttons;   /// used to identify changes
-  static std::vector<double> last_axes;    /// used to identify changes
-  bool state_changed = false;              /// true if something changed
+  static std::vector<bool> last_buttons;  /// used to identify changes
+  static std::vector<double> last_axes;   /// used to identify changes
+  bool state_changed = false;             /// true if something changed
   current_cmd_.header.frame_id = frame_id_;
   current_cmd_.header.stamp = this->get_clock()->now();
   if (read_dynamic_parameters() == true) {
@@ -115,14 +114,10 @@ void Gamepad::on_timer()
 
 void Gamepad::declare_parameters()
 {
-  declare_parameters_with_description("rate", 10.0,
-                                      "Publishing rate in [hz]",
-                                      1.0, 10000.0, 0.1);
-  declare_parameters_with_description("frame_id", "base_link",
-    "Frame used in TwistStamped messages");
+  declare_parameters_with_description("rate", 10.0, "Publishing rate in [hz]", 1.0, 10000.0, 0.1);
+  declare_parameters_with_description("frame_id", "base_link", "Frame used in TwistStamped messages");
   declare_parameters_with_description("device", "/dev/input/js0", "Joystick device");
-  declare_parameters_with_description("use_stamped_velocity", false,
-    "On true it uses TwistStamped messages, otherwise Twist!");
+  declare_parameters_with_description("use_stamped_velocity", false, "On true it uses TwistStamped messages, otherwise Twist!");
   declare_parameters_with_description("debug", false, "On true it prints changes on the joystick");
   declare_parameters_with_description("flip_angular_when_reversing", false, "On true it flips the angular velocity when reversing");
 
@@ -136,18 +131,16 @@ void Gamepad::declare_parameters()
   declare_parameters_with_description("az", 0, "axis angular z (-1 means not used)", -1, 8, 1);
   declare_parameters_with_description("scale_linear", 1.0, "scale linear [m/s]", 0.0, 10.0, 0.01);
   declare_parameters_with_description("scale_angular", 1.0, "scale rotation [rad/s]", 0.0, 10.0, 0.01);
-  declare_parameters_with_description("invert_linear", true,
-    "On true it inverts the linear axes, the kernel joystick API reports stick forward as negative");
-  declare_parameters_with_description("invert_angular", true,
-    "On true it inverts the angular axes, the kernel joystick API reports stick right as negative");
+  declare_parameters_with_description("invert_linear", true, "On true it inverts the linear axes, the kernel joystick API reports stick forward as negative");
+  declare_parameters_with_description("invert_angular", true, "On true it inverts the angular axes, the kernel joystick API reports stick right as negative");
 }
 
 bool Gamepad::read_dynamic_parameters()
 {
-  static bool first_call = true;                            /// varible to identify the first time the fnc was called to init all variables
-  static rclcpp::Time last_call = this->get_clock()->now(); /// time on the last check
-  rclcpp::Time current_call = this->get_clock()->now();     /// current time
-  bool changes = false;                                     /// used to identify changes
+  static bool first_call = true;                             /// varible to identify the first time the fnc was called to init all variables
+  static rclcpp::Time last_call = this->get_clock()->now();  /// time on the last check
+  rclcpp::Time current_call = this->get_clock()->now();      /// current time
+  bool changes = false;                                      /// used to identify changes
 
   if (first_call || ((current_call - last_call)).seconds() > 1.0) {
     update_parameter_and_log("rate", rate_, changes, first_call);

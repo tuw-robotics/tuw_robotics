@@ -69,8 +69,7 @@ class GraphDisplaySelectionHandler;
 typedef std::shared_ptr<GraphDisplaySelectionHandler> GraphDisplaySelectionHandlerPtr;
 
 /** @brief Accumulates and displays the pose from a tuw_graph_msgs::Graph message. */
-class TUW_RVIZ_PUBLIC GraphDisplay
-  : public rviz_common::MessageFilterDisplay<tuw_graph_msgs::msg::Graph>
+class TUW_RVIZ_PUBLIC GraphDisplay : public rviz_common::MessageFilterDisplay<tuw_graph_msgs::msg::Graph>
 {
   Q_OBJECT
 

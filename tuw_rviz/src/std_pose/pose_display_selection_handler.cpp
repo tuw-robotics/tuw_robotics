@@ -49,38 +49,28 @@ namespace std_pose
 namespace displays
 {
 
-PoseDisplaySelectionHandler::PoseDisplaySelectionHandler(
-  PoseDisplay * display, rviz_common::DisplayContext * context)
-: SelectionHandler(context),
-  display_(display),
-  frame_property_(nullptr),
-  position_property_(nullptr),
-  orientation_property_(nullptr)
+PoseDisplaySelectionHandler::PoseDisplaySelectionHandler(PoseDisplay * display, rviz_common::DisplayContext * context)
+: SelectionHandler(context), display_(display), frame_property_(nullptr), position_property_(nullptr), orientation_property_(nullptr)
 {
 }
 
-void PoseDisplaySelectionHandler::createProperties(
-  const rviz_common::interaction::Picked & obj, rviz_common::properties::Property * parent_property)
+void PoseDisplaySelectionHandler::createProperties(const rviz_common::interaction::Picked & obj, rviz_common::properties::Property * parent_property)
 {
   (void)obj;
-  rviz_common::properties::Property * cat = new rviz_common::properties::Property(
-    "Pose " + display_->getName(), QVariant(), "", parent_property);
+  rviz_common::properties::Property * cat = new rviz_common::properties::Property("Pose " + display_->getName(), QVariant(), "", parent_property);
   properties_.push_back(cat);
 
   frame_property_ = new rviz_common::properties::StringProperty("Frame", "", "", cat);
   frame_property_->setReadOnly(true);
 
-  position_property_ =
-    new rviz_common::properties::VectorProperty("Position", Ogre::Vector3::ZERO, "", cat);
+  position_property_ = new rviz_common::properties::VectorProperty("Position", Ogre::Vector3::ZERO, "", cat);
   position_property_->setReadOnly(true);
 
-  orientation_property_ = new rviz_common::properties::QuaternionProperty(
-    "Orientation", Ogre::Quaternion::IDENTITY, "", cat);
+  orientation_property_ = new rviz_common::properties::QuaternionProperty("Orientation", Ogre::Quaternion::IDENTITY, "", cat);
   orientation_property_->setReadOnly(true);
 }
 
-rviz_common::interaction::V_AABB PoseDisplaySelectionHandler::getAABBs(
-  const rviz_common::interaction::Picked & obj)
+rviz_common::interaction::V_AABB PoseDisplaySelectionHandler::getAABBs(const rviz_common::interaction::Picked & obj)
 {
   (void)obj;
   rviz_common::interaction::V_AABB aabbs;
@@ -91,24 +81,18 @@ rviz_common::interaction::V_AABB PoseDisplaySelectionHandler::getAABBs(
      */
     bool derive_world_bounding_box = true;
     if (display_->shape_property_->getOptionInt() == PoseDisplay::Arrow) {
-      aabbs.push_back(
-        display_->arrow_->getHead()->getEntity()->getWorldBoundingBox(derive_world_bounding_box));
-      aabbs.push_back(
-        display_->arrow_->getShaft()->getEntity()->getWorldBoundingBox(derive_world_bounding_box));
+      aabbs.push_back(display_->arrow_->getHead()->getEntity()->getWorldBoundingBox(derive_world_bounding_box));
+      aabbs.push_back(display_->arrow_->getShaft()->getEntity()->getWorldBoundingBox(derive_world_bounding_box));
     } else {
-      aabbs.push_back(
-        display_->axes_->getXShape().getEntity()->getWorldBoundingBox(derive_world_bounding_box));
-      aabbs.push_back(
-        display_->axes_->getYShape().getEntity()->getWorldBoundingBox(derive_world_bounding_box));
-      aabbs.push_back(
-        display_->axes_->getZShape().getEntity()->getWorldBoundingBox(derive_world_bounding_box));
+      aabbs.push_back(display_->axes_->getXShape().getEntity()->getWorldBoundingBox(derive_world_bounding_box));
+      aabbs.push_back(display_->axes_->getYShape().getEntity()->getWorldBoundingBox(derive_world_bounding_box));
+      aabbs.push_back(display_->axes_->getZShape().getEntity()->getWorldBoundingBox(derive_world_bounding_box));
     }
   }
   return aabbs;
 }
 
-void PoseDisplaySelectionHandler::setMessage(
-  geometry_msgs::msg::PoseStamped::ConstSharedPtr message)
+void PoseDisplaySelectionHandler::setMessage(geometry_msgs::msg::PoseStamped::ConstSharedPtr message)
 {
   // properties_.size() should only be > 0 after createProperties()
   // and before destroyProperties(), during which frame_property_,
@@ -117,8 +101,7 @@ void PoseDisplaySelectionHandler::setMessage(
   if (properties_.size() > 0) {
     frame_property_->setStdString(message->header.frame_id);
     position_property_->setVector(rviz_common::pointMsgToOgre(message->pose.position));
-    orientation_property_->setQuaternion(
-      rviz_common::quaternionMsgToOgre(message->pose.orientation));
+    orientation_property_->setQuaternion(rviz_common::quaternionMsgToOgre(message->pose.orientation));
   }
 }
 

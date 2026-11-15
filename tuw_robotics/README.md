@@ -5,6 +5,7 @@
 It exists only so that all packages of the [tuw_robotics](https://github.com/tuw-robotics/tuw_robotics) repository can be installed with a single package. It depends (`exec_depend`) on:
 
 * [tuw](../tuw)
+* [tuw_camera](../tuw_camera)
 * [tuw_gamepad](../tuw_gamepad)
 * [tuw_json](../tuw_json)
 * [tuw_rviz](../tuw_rviz)

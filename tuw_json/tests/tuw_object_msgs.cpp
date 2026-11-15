@@ -14,8 +14,7 @@ TEST(json, tuw_shapeshape)
   tuw_geometry_msgs::Pose pose(10.0, 20.0, 30.0);
   tuw_object_msgs::Shape shape(2, 3);
   shape.poses.push_back(pose);
-  shape.params =
-    tuw_std_msgs::ParameterArray({"length", "width"}, std::vector<double>({22.9, 44.3}));
+  shape.params = tuw_std_msgs::ParameterArray({"length", "width"}, std::vector<double>({22.9, 44.3}));
   tuw_json::write(filename, "shape", tuw_json::toJson(shape));
 }
 

@@ -56,40 +56,27 @@ namespace displays
 PoseDisplay::PoseDisplay()
 : arrow_(nullptr), axes_(nullptr), pose_valid_(false)
 {
-  shape_property_ = new rviz_common::properties::EnumProperty(
-    "Shape", "Arrow", "Shape to display the pose as.", this, SLOT(updateShapeChoice()));
+  shape_property_ = new rviz_common::properties::EnumProperty("Shape", "Arrow", "Shape to display the pose as.", this, SLOT(updateShapeChoice()));
   shape_property_->addOption("Arrow", Arrow);
   shape_property_->addOption("Axes", Axes);
 
-  color_property_ = new rviz_common::properties::ColorProperty(
-    "Color", QColor(255, 25, 0), "Color to draw the arrow.", this, SLOT(updateColorAndAlpha()));
+  color_property_ = new rviz_common::properties::ColorProperty("Color", QColor(255, 25, 0), "Color to draw the arrow.", this, SLOT(updateColorAndAlpha()));
 
-  alpha_property_ = new rviz_common::properties::FloatProperty(
-    "Alpha", 1, "Amount of transparency to apply to the arrow.", this, SLOT(updateColorAndAlpha()));
+  alpha_property_ = new rviz_common::properties::FloatProperty("Alpha", 1, "Amount of transparency to apply to the arrow.", this, SLOT(updateColorAndAlpha()));
   alpha_property_->setMin(0);
   alpha_property_->setMax(1);
 
-  shaft_length_property_ = new rviz_common::properties::FloatProperty(
-    "Shaft Length", 1, "Length of the arrow's shaft, in meters.", this,
-    SLOT(updateArrowGeometry()));
+  shaft_length_property_ = new rviz_common::properties::FloatProperty("Shaft Length", 1, "Length of the arrow's shaft, in meters.", this, SLOT(updateArrowGeometry()));
 
-  shaft_radius_property_ = new rviz_common::properties::FloatProperty(
-    "Shaft Radius", 0.05f, "Radius of the arrow's shaft, in meters.", this,
-    SLOT(updateArrowGeometry()));
+  shaft_radius_property_ = new rviz_common::properties::FloatProperty("Shaft Radius", 0.05f, "Radius of the arrow's shaft, in meters.", this, SLOT(updateArrowGeometry()));
 
-  head_length_property_ = new rviz_common::properties::FloatProperty(
-    "Head Length", 0.3f, "Length of the arrow's head, in meters.", this,
-    SLOT(updateArrowGeometry()));
+  head_length_property_ = new rviz_common::properties::FloatProperty("Head Length", 0.3f, "Length of the arrow's head, in meters.", this, SLOT(updateArrowGeometry()));
 
-  head_radius_property_ = new rviz_common::properties::FloatProperty(
-    "Head Radius", 0.1f, "Radius of the arrow's head, in meters.", this,
-    SLOT(updateArrowGeometry()));
+  head_radius_property_ = new rviz_common::properties::FloatProperty("Head Radius", 0.1f, "Radius of the arrow's head, in meters.", this, SLOT(updateArrowGeometry()));
 
-  axes_length_property_ = new rviz_common::properties::FloatProperty(
-    "Axes Length", 1, "Length of each axis, in meters.", this, SLOT(updateAxisGeometry()));
+  axes_length_property_ = new rviz_common::properties::FloatProperty("Axes Length", 1, "Length of each axis, in meters.", this, SLOT(updateAxisGeometry()));
 
-  axes_radius_property_ = new rviz_common::properties::FloatProperty(
-    "Axes Radius", 0.1f, "Radius of each axis, in meters.", this, SLOT(updateAxisGeometry()));
+  axes_radius_property_ = new rviz_common::properties::FloatProperty("Axes Radius", 0.1f, "Radius of each axis, in meters.", this, SLOT(updateAxisGeometry()));
 }
 
 void PoseDisplay::onInitialize()
@@ -97,14 +84,10 @@ void PoseDisplay::onInitialize()
   MFDClass::onInitialize();
 
   arrow_ = std::make_unique<rviz_rendering::Arrow>(
-    scene_manager_, scene_node_, shaft_length_property_->getFloat(),
-    shaft_radius_property_->getFloat(), head_length_property_->getFloat(),
-    head_radius_property_->getFloat());
+    scene_manager_, scene_node_, shaft_length_property_->getFloat(), shaft_radius_property_->getFloat(), head_length_property_->getFloat(), head_radius_property_->getFloat());
   arrow_->setDirection(Ogre::Vector3::UNIT_X);
 
-  axes_ = std::make_unique<rviz_rendering::Axes>(
-    scene_manager_, scene_node_, axes_length_property_->getFloat(),
-    axes_radius_property_->getFloat());
+  axes_ = std::make_unique<rviz_rendering::Axes>(scene_manager_, scene_node_, axes_length_property_->getFloat(), axes_radius_property_->getFloat());
 
   updateShapeChoice();
   updateColorAndAlpha();
@@ -121,8 +104,7 @@ void PoseDisplay::onEnable()
 
 void PoseDisplay::setupSelectionHandler()
 {
-  coll_handler_ =
-    rviz_common::interaction::createSelectionHandler<PoseDisplaySelectionHandler>(this, context_);
+  coll_handler_ = rviz_common::interaction::createSelectionHandler<PoseDisplaySelectionHandler>(this, context_);
   coll_handler_->addTrackedObjects(arrow_->getSceneNode());
   coll_handler_->addTrackedObjects(axes_->getSceneNode());
 }
@@ -145,9 +127,7 @@ void PoseDisplay::updateColorAndAlpha()
 
 void PoseDisplay::updateArrowGeometry()
 {
-  arrow_->set(
-    shaft_length_property_->getFloat(), shaft_radius_property_->getFloat(),
-    head_length_property_->getFloat(), head_radius_property_->getFloat());
+  arrow_->set(shaft_length_property_->getFloat(), shaft_radius_property_->getFloat(), head_length_property_->getFloat(), head_radius_property_->getFloat());
   context_->queueRender();
 }
 
@@ -191,17 +171,13 @@ void PoseDisplay::updateShapeVisibility()
 void PoseDisplay::processMessage(geometry_msgs::msg::PoseStamped::ConstSharedPtr message)
 {
   if (!rviz_common::validateFloats(*message)) {
-    setStatus(
-      rviz_common::properties::StatusProperty::Error, "Topic",
-      "Message contained invalid floating point values (nans or infs)");
+    setStatus(rviz_common::properties::StatusProperty::Error, "Topic", "Message contained invalid floating point values (nans or infs)");
     return;
   }
 
   Ogre::Vector3 position;
   Ogre::Quaternion orientation;
-  if (!context_->getFrameManager()->transform(
-      message->header, message->pose, position, orientation))
-  {
+  if (!context_->getFrameManager()->transform(message->header, message->pose, position, orientation)) {
     setMissingTransformToFixedFrame(message->header.frame_id);
     return;
   }

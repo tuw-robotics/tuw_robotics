@@ -52,21 +52,17 @@ namespace tuw_shape_array
 namespace displays
 {
 
-class TUW_RVIZ_PUBLIC ShapeArrayDisplaySelectionHandler
-  : public rviz_common::interaction::SelectionHandler
+class TUW_RVIZ_PUBLIC ShapeArrayDisplaySelectionHandler : public rviz_common::interaction::SelectionHandler
 {
 public:
-  void createProperties(
-    const rviz_common::interaction::Picked & obj,
-    rviz_common::properties::Property * parent_property) override;
+  void createProperties(const rviz_common::interaction::Picked & obj, rviz_common::properties::Property * parent_property) override;
 
   rviz_common::interaction::V_AABB getAABBs(const rviz_common::interaction::Picked & obj) override;
 
   void setMessage(tuw_object_msgs::msg::ShapeArray::ConstSharedPtr message);
 
 private:
-  ShapeArrayDisplaySelectionHandler(
-    ShapeArrayDisplay * display, rviz_common::DisplayContext * context);
+  ShapeArrayDisplaySelectionHandler(ShapeArrayDisplay * display, rviz_common::DisplayContext * context);
 
   ShapeArrayDisplay * display_;
   rviz_common::properties::StringProperty * frame_property_;
@@ -74,8 +70,7 @@ private:
   rviz_common::properties::QuaternionProperty * orientation_property_;
 
   template<typename T, typename ... Args>
-  friend typename std::shared_ptr<T> rviz_common::interaction::createSelectionHandler(
-    Args... arguments);
+  friend typename std::shared_ptr<T> rviz_common::interaction::createSelectionHandler(Args... arguments);
 };
 
 }  // namespace displays

@@ -1,25 +1,23 @@
 #include "tuw_gamepad/joystick.hpp"
-#include <sstream>
+
 #include <iomanip>
+#include <sstream>
 
 using namespace tuw;
 
 Joystick::Joystick(const std::string & device)
-: device_(device)
-{
-}
+: device_(device) {}
 
 int Joystick::init(std::string & msg)
 {
-    // Open the joystick device
+  // Open the joystick device
   std::stringstream ss;
   bool result = NA;
   joystick_fd = open(device_.c_str(), O_RDONLY);
   if (joystick_fd == -1) {
     result = OPEN_FAILED;
     ss << "Error opening joystick device" << std::endl;
-    ss << "Make sure the joystick is connected and you have permissions to read " << device_ <<
-      std::endl;
+    ss << "Make sure the joystick is connected and you have permissions to read " << device_ << std::endl;
     ss << "You might need to run: sudo usermod -a -G input $USER && newgrp input" << std::endl;
   } else {
     ss << "Opened joystick: " << get_joystick_name() << std::endl;
@@ -58,7 +56,7 @@ int Joystick::get_num_buttons()
 // Function to get the joystick name
 std::string Joystick::get_joystick_name()
 {
-  char name[128];   // Max name length is 128 bytes
+  char name[128];  // Max name length is 128 bytes
   if (ioctl(joystick_fd, JSIOCGNAME(sizeof(name)), name) == -1) {
     perror("ioctl (JSIOCGNAME)");
     return "Unknown Joystick";
@@ -71,7 +69,7 @@ int Joystick::wait_of_event(std::string & msg)
 {
   std::stringstream ss;
   bool result = NA;
-    // Read a joystick event
+  // Read a joystick event
   ssize_t bytes_read = read(joystick_fd, &js_e, sizeof(js_event));
 
   if (bytes_read == -1) {
@@ -80,16 +78,16 @@ int Joystick::wait_of_event(std::string & msg)
   } else {
     if (bytes_read == sizeof(js_event)) {
       std::lock_guard<std::mutex> lock(mutex_);
-            // Process the event
-      switch (js_e.type & ~JS_EVENT_INIT) { // Mask out JS_EVENT_INIT to handle initial states
+      // Process the event
+      switch (js_e.type & ~JS_EVENT_INIT) {  // Mask out JS_EVENT_INIT to handle initial states
         case JS_EVENT_BUTTON:
           buttons_[(int)js_e.number] = js_e.value;
-                // std::cout << "Button " << (int)js_e.number << " "   << (js_e.value ? "pressed" : "released") << std::endl;
+          // std::cout << "Button " << (int)js_e.number << " "   << (js_e.value ? "pressed" : "released") << std::endl;
           break;
         case JS_EVENT_AXIS:
           axes_[(int)js_e.number] = static_cast<double>(js_e.value) / 32767.0;
-                // std::cout << "Axis " << (int)js_e.number << " value: " << js_e.value << std::endl;
-                // Axis values typically range from -32767 to 32767
+          // std::cout << "Axis " << (int)js_e.number << " value: " << js_e.value << std::endl;
+          // Axis values typically range from -32767 to 32767
           break;
       }
     }
@@ -136,8 +134,12 @@ std::string Joystick::state()
   ss << std::fixed << std::setprecision(4) << std::showpos;
   for (size_t i = 0; i < axes_.size(); i++) {
     ss << (i == 0 ? " " : ", ") << i << ":";
-    if(axes_[i] > 0.) {ss << "\033[32m";}
-    if(axes_[i] < 0.) {ss << "\033[31m";}
+    if (axes_[i] > 0.) {
+      ss << "\033[32m";
+    }
+    if (axes_[i] < 0.) {
+      ss << "\033[31m";
+    }
     ss << (axes_[i]) << "\033[0m";
   }
   return ss.str();
@@ -149,15 +151,12 @@ std::shared_ptr<std::thread> Joystick::start()
   thread_ = std::make_shared<std::thread>([this]() {
         std::string info;
         while (running_) {
-          if(this->wait_of_event(info) != tuw::Joystick::SUCCESS) {
+          if (this->wait_of_event(info) != tuw::Joystick::SUCCESS) {
             running_ = false;
           }
         }
-    });
+  });
   return thread_;
 }
 
-void Joystick::stop()
-{
-  running_ = false;
-}
+void Joystick::stop() {running_ = false;}

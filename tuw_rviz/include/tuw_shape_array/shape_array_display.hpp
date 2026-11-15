@@ -63,8 +63,7 @@ class ShapeArrayDisplaySelectionHandler;
 typedef std::shared_ptr<ShapeArrayDisplaySelectionHandler> ShapeArrayDisplaySelectionHandlerPtr;
 
 /** @brief Accumulates and displays the pose from a tuw_object_msgs::ShapeArray message. */
-class TUW_RVIZ_PUBLIC ShapeArrayDisplay
-  : public rviz_common::MessageFilterDisplay<tuw_object_msgs::msg::ShapeArray>
+class TUW_RVIZ_PUBLIC ShapeArrayDisplay : public rviz_common::MessageFilterDisplay<tuw_object_msgs::msg::ShapeArray>
 {
   Q_OBJECT
 

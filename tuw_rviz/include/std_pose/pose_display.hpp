@@ -64,8 +64,7 @@ class PoseDisplaySelectionHandler;
 typedef std::shared_ptr<PoseDisplaySelectionHandler> PoseDisplaySelectionHandlerPtr;
 
 /** @brief Accumulates and displays the pose from a geometry_msgs::PoseStamped message. */
-class TUW_RVIZ_PUBLIC PoseDisplay
-  : public rviz_common::MessageFilterDisplay<geometry_msgs::msg::PoseStamped>
+class TUW_RVIZ_PUBLIC PoseDisplay : public rviz_common::MessageFilterDisplay<geometry_msgs::msg::PoseStamped>
 {
   Q_OBJECT
 

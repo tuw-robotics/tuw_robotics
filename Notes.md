@@ -3,7 +3,7 @@
 ## Releasing the packages
 
 How to prepare and publish a new release of the `tuw_robotics` packages
-(`tuw`, `tuw_json`, `tuw_rviz`, `tuw_gamepad` and the meta package `tuw_robotics`) with **bloom**.
+(`tuw`, `tuw_json`, `tuw_rviz`, `tuw_gamepad`, `tuw_camera` and the meta package `tuw_robotics`) with **bloom**.
 
 The commands below use `$ROS_DISTRO`, which is set when you source the ROS 2 environment (e.g. by `env.sh`).
 Check that it is the distribution you are releasing for (`echo $ROS_DISTRO`), e.g. `rolling`, `jazzy`, `lyrical`.
@@ -27,7 +27,7 @@ Both files are copies of the official ROS 2 configuration from
 [ament/ament_lint](https://github.com/ament/ament_lint), with only the line length changed.
 
 > **Note:** The author overrode the maximum line length in the `CMakeLists.txt` of every package with tests
-> (`tuw`, `tuw_json`, `tuw_rviz`, `tuw_gamepad`). Without this override, `colcon test` would use the ROS 2 default of
+> (`tuw`, `tuw_json`, `tuw_rviz`, `tuw_gamepad`, `tuw_camera`). Without this override, `colcon test` would use the ROS 2 default of
 > 100 characters and fail on longer lines. Keep the override when you edit these files, and add it to any new package.
 
 In every package's `CMakeLists.txt`, the default uncrustify check (100 characters) is replaced with one that allows 200 characters:
@@ -71,8 +71,8 @@ ament_uncrustify -c ament_code_style.cfg --reformat .
 Run in the workspace (`ws`):
 
 ```bash
-colcon build --packages-select tuw tuw_json tuw_rviz tuw_gamepad tuw_robotics
-colcon test  --packages-select tuw tuw_json tuw_rviz tuw_gamepad tuw_robotics
+colcon build --packages-select tuw tuw_json tuw_rviz tuw_gamepad tuw_camera tuw_robotics
+colcon test  --packages-select tuw tuw_json tuw_rviz tuw_gamepad tuw_camera tuw_robotics
 colcon test-result --verbose
 ```
 
@@ -112,7 +112,9 @@ Follow [section 1](#1-code-formatting): fix the formatting, then run all tests. 
 #### Step 3: Check package.xml
 
 - All packages in this repository must have the **same version**. `catkin_prepare_release` refuses to run otherwise.
-  At the time of writing, `tuw_gamepad` is at `0.0.0` and all other packages are at `0.0.2`.
+  At the time of writing, `tuw_gamepad` is at `0.0.0`, `tuw_camera` is at `1.0.0` and all other packages are at `0.0.2`.
+- `tuw_gamepad` and `tuw_camera` have no `CHANGELOG.rst` yet. Create it with `catkin_generate_changelog --all` (see step 4).
+- The meta package `tuw_robotics` must list every package as `<exec_depend>`, including `tuw_camera`.
 - Every dependency must be a valid rosdep key. Check this with:
 
   ```bash

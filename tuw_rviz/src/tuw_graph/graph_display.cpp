@@ -58,64 +58,40 @@ namespace displays
 GraphDisplay::GraphDisplay()
 : origin_axes_(nullptr), pose_valid_(false)
 {
-  origin_axes_length_property_ = new rviz_common::properties::FloatProperty(
-    "Axes Length", 1, "Length of each axis, in meters.", this, SLOT(updateAxisGeometry()));
+  origin_axes_length_property_ = new rviz_common::properties::FloatProperty("Axes Length", 1, "Length of each axis, in meters.", this, SLOT(updateAxisGeometry()));
 
-  origin_axes_radius_property_ = new rviz_common::properties::FloatProperty(
-    "Axes Radius", 0.1f, "Radius of each axis, in meters.", this, SLOT(updateAxisGeometry()));
+  origin_axes_radius_property_ = new rviz_common::properties::FloatProperty("Axes Radius", 0.1f, "Radius of each axis, in meters.", this, SLOT(updateAxisGeometry()));
 
-  path_show_property_ = new rviz_common::properties::BoolProperty(
-    "Show Path", true, "Shows path between nodes.", this, SLOT(updatePathsVisibility()));
-  path_alpha_property_ = new rviz_common::properties::FloatProperty(
-    "Path alpha", 1, "Amount of transparency to apply to the path.", this,
-    SLOT(updatePathsVisibility()));
+  path_show_property_ = new rviz_common::properties::BoolProperty("Show Path", true, "Shows path between nodes.", this, SLOT(updatePathsVisibility()));
+  path_alpha_property_ = new rviz_common::properties::FloatProperty("Path alpha", 1, "Amount of transparency to apply to the path.", this, SLOT(updatePathsVisibility()));
   path_alpha_property_->setMin(0);
   path_alpha_property_->setMax(1);
-  path_color_property_ = new rviz_common::properties::ColorProperty(
-    "Path color", QColor(0, 255, 0), "Color to draw path", this, SLOT(updatePathsColor()));
+  path_color_property_ = new rviz_common::properties::ColorProperty("Path color", QColor(0, 255, 0), "Color to draw path", this, SLOT(updatePathsColor()));
 
-  edge_arrow_size_property_ = new rviz_common::properties::FloatProperty(
-    "Edge Arrow Size", 0.1f, "Size of the the edge arrow. 0 means off.", this,
-    SLOT(updateEdgesGeometry()));
+  edge_arrow_size_property_ = new rviz_common::properties::FloatProperty("Edge Arrow Size", 0.1f, "Size of the the edge arrow. 0 means off.", this, SLOT(updateEdgesGeometry()));
   edge_arrow_size_property_->setMin(0);
   edge_arrow_size_property_->setMax(1);
-  edge_show_property_ = new rviz_common::properties::BoolProperty(
-    "Draw Edge", true, "Draws edges between nodes.", this, SLOT(updateEdgesVisibility()));
-  edge_alpha_property_ = new rviz_common::properties::FloatProperty(
-    "Edges alpha", 1, "Amount of transparency to apply to the edges.", this,
-    SLOT(updateEdgesColor()));
-  edge_overlay_offset_property_ = new rviz_common::properties::FloatProperty(
-    "Edges overlay offset", 0.1, "Overlay offest for bidirectional edges", this,
-    SLOT(updateEdgesGeometry()));
+  edge_show_property_ = new rviz_common::properties::BoolProperty("Draw Edge", true, "Draws edges between nodes.", this, SLOT(updateEdgesVisibility()));
+  edge_alpha_property_ = new rviz_common::properties::FloatProperty("Edges alpha", 1, "Amount of transparency to apply to the edges.", this, SLOT(updateEdgesColor()));
+  edge_overlay_offset_property_ = new rviz_common::properties::FloatProperty("Edges overlay offset", 0.1, "Overlay offest for bidirectional edges", this, SLOT(updateEdgesGeometry()));
   edge_alpha_property_->setMin(0);
   edge_alpha_property_->setMax(1);
-  edge_color_property_ = new rviz_common::properties::ColorProperty(
-    "Edges color", QColor(0, 255, 255), "Color to draw edges", this, SLOT(updateEdgesColor()));
+  edge_color_property_ = new rviz_common::properties::ColorProperty("Edges color", QColor(0, 255, 255), "Color to draw edges", this, SLOT(updateEdgesColor()));
 
-  node_alpha_property_ = new rviz_common::properties::FloatProperty(
-    "Nodes alpha", 0.5, "Amount of transparency to apply to the nodes.", this,
-    SLOT(updateNodesVisibility()));
-  node_show_property_ = new rviz_common::properties::BoolProperty(
-    "Draw Node", true, "Draws nodes.", this, SLOT(updateNodesVisibility()));
+  node_alpha_property_ = new rviz_common::properties::FloatProperty("Nodes alpha", 0.5, "Amount of transparency to apply to the nodes.", this, SLOT(updateNodesVisibility()));
+  node_show_property_ = new rviz_common::properties::BoolProperty("Draw Node", true, "Draws nodes.", this, SLOT(updateNodesVisibility()));
   node_alpha_property_->setMin(0);
   node_alpha_property_->setMax(1);
-  node_color_property_ = new rviz_common::properties::ColorProperty(
-    "Nodes color", QColor(255, 0, 255), "Color to draw nodes", this, SLOT(updateNodesColor()));
-  node_size_property_ = new rviz_common::properties::FloatProperty(
-    "Nodes size", 0.15f, "Node size.", this, SLOT(updateNodesGeometry()));
-  node_id_color_property_ = new rviz_common::properties::ColorProperty(
-    "Nodes ID color", QColor(128, 0, 255), "Color to draw nodes IDs", this,
-    SLOT(updateNodesIdColor()));
-  node_id_show_property_ = new rviz_common::properties::BoolProperty(
-    "Draw Node ID", true, "Draws nodes IDs", this, SLOT(updateNodesIdVisibility()));
+  node_color_property_ = new rviz_common::properties::ColorProperty("Nodes color", QColor(255, 0, 255), "Color to draw nodes", this, SLOT(updateNodesColor()));
+  node_size_property_ = new rviz_common::properties::FloatProperty("Nodes size", 0.15f, "Node size.", this, SLOT(updateNodesGeometry()));
+  node_id_color_property_ = new rviz_common::properties::ColorProperty("Nodes ID color", QColor(128, 0, 255), "Color to draw nodes IDs", this, SLOT(updateNodesIdColor()));
+  node_id_show_property_ = new rviz_common::properties::BoolProperty("Draw Node ID", true, "Draws nodes IDs", this, SLOT(updateNodesIdVisibility()));
 }
 
 void GraphDisplay::onInitialize()
 {
   MFDClass::onInitialize();
-  origin_axes_ = std::make_unique<rviz_rendering::Axes>(
-    scene_manager_, scene_node_, origin_axes_length_property_->getFloat(),
-    origin_axes_radius_property_->getFloat());
+  origin_axes_ = std::make_unique<rviz_rendering::Axes>(scene_manager_, scene_node_, origin_axes_length_property_->getFloat(), origin_axes_radius_property_->getFloat());
   updateAxesVisibility();
   updateAxisGeometry();
 }
@@ -132,8 +108,7 @@ void GraphDisplay::onEnable()
 
 void GraphDisplay::setupSelectionHandler()
 {
-  coll_handler_ =
-    rviz_common::interaction::createSelectionHandler<GraphDisplaySelectionHandler>(this, context_);
+  coll_handler_ = rviz_common::interaction::createSelectionHandler<GraphDisplaySelectionHandler>(this, context_);
   coll_handler_->addTrackedObjects(origin_axes_->getSceneNode());
 }
 
@@ -151,8 +126,7 @@ void GraphDisplay::updateAxesVisibility()
 }
 void GraphDisplay::updateAxisGeometry()
 {
-  origin_axes_->set(
-    origin_axes_length_property_->getFloat(), origin_axes_radius_property_->getFloat());
+  origin_axes_->set(origin_axes_length_property_->getFloat(), origin_axes_radius_property_->getFloat());
   context_->queueRender();
 }
 
@@ -215,12 +189,8 @@ void GraphDisplay::updateEdgesGeometry()
       // Arrow shaft
       Ogre::Vector3 shaft = unit * edge_arrow_property;  // times 2 because its half the edge
       double a = 5. * M_PI / 180.;
-      Ogre::Vector3 startL = edge.end - Ogre::Vector3(
-        shaft.x * cos(+a) + shaft.y * -sin(+a),
-        shaft.x * sin(+a) + shaft.y * cos(+a), shaft.z);
-      Ogre::Vector3 startR = edge.end - Ogre::Vector3(
-        shaft.x * cos(-a) + shaft.y * -sin(-a),
-        shaft.x * sin(-a) + shaft.y * cos(-a), shaft.z);
+      Ogre::Vector3 startL = edge.end - Ogre::Vector3(shaft.x * cos(+a) + shaft.y * -sin(+a), shaft.x * sin(+a) + shaft.y * cos(+a), shaft.z);
+      Ogre::Vector3 startR = edge.end - Ogre::Vector3(shaft.x * cos(-a) + shaft.y * -sin(-a), shaft.x * sin(-a) + shaft.y * cos(-a), shaft.z);
       edge.arrowL->setPoints(startL, edge.end);
       edge.arrowR->setPoints(startR, edge.end);
     } else {
@@ -314,13 +284,10 @@ void GraphDisplay::processMessage(tuw_graph_msgs::msg::Graph::ConstSharedPtr mes
   for (const auto & node : msg.nodes) {
     const geometry_msgs::msg::Point & p = node.pose.position;
     NodeDisplay node_display;
-    node_display.shape = std::make_unique<rviz_rendering::Shape>(
-      rviz_rendering::Shape::Cube, scene_manager_, scene_node_);
+    node_display.shape = std::make_unique<rviz_rendering::Shape>(rviz_rendering::Shape::Cube, scene_manager_, scene_node_);
     node_display.shape->setPosition(Ogre::Vector3(p.x, p.y, p.z));
-    node_display.text = std::make_unique<rviz_rendering::MovableText>(
-      std::to_string(node.id), "Liberation Sans", 0.1f);
-    node_display.text->setTextAlignment(
-      rviz_rendering::MovableText::H_CENTER, rviz_rendering::MovableText::V_BELOW);
+    node_display.text = std::make_unique<rviz_rendering::MovableText>(std::to_string(node.id), "Liberation Sans", 0.1f);
+    node_display.text->setTextAlignment(rviz_rendering::MovableText::H_CENTER, rviz_rendering::MovableText::V_BELOW);
     node_display.scene_node = scene_node_->createChildSceneNode();
     node_display.scene_node->setPosition(Ogre::Vector3(p.x, p.y, p.z));
     node_display.scene_node->attachObject(node_display.text.get());

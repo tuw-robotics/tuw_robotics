@@ -57,17 +57,13 @@ namespace displays
 ShapeArrayDisplay::ShapeArrayDisplay()
 : map_frame_billboard_line_(nullptr), shape_array_valid_(false)
 {
-  color_property_ = new rviz_common::properties::ColorProperty(
-    "Color", QColor(255, 25, 0), "Color to draw the points.", this, SLOT(updateColorAndAlpha()));
+  color_property_ = new rviz_common::properties::ColorProperty("Color", QColor(255, 25, 0), "Color to draw the points.", this, SLOT(updateColorAndAlpha()));
 
-  alpha_property_ = new rviz_common::properties::FloatProperty(
-    "Alpha", 1, "Amount of transparency to apply to the points.", this,
-    SLOT(updateColorAndAlpha()));
+  alpha_property_ = new rviz_common::properties::FloatProperty("Alpha", 1, "Amount of transparency to apply to the points.", this, SLOT(updateColorAndAlpha()));
   alpha_property_->setMin(0);
   alpha_property_->setMax(1);
 
-  size_property_ = new rviz_common::properties::FloatProperty(
-    "Size", 0.1f, "Size of the Poses, in meters.", this, SLOT(updatePoseSize()));
+  size_property_ = new rviz_common::properties::FloatProperty("Size", 0.1f, "Size of the Poses, in meters.", this, SLOT(updatePoseSize()));
 }
 void ShapeArrayDisplay::onInitialize()
 {
@@ -85,12 +81,7 @@ void ShapeArrayDisplay::onEnable()
   setupSelectionHandler();
 }
 
-void ShapeArrayDisplay::setupSelectionHandler()
-{
-  coll_handler_ =
-    rviz_common::interaction::createSelectionHandler<ShapeArrayDisplaySelectionHandler>(
-    this, context_);
-}
+void ShapeArrayDisplay::setupSelectionHandler() {coll_handler_ = rviz_common::interaction::createSelectionHandler<ShapeArrayDisplaySelectionHandler>(this, context_);}
 
 void ShapeArrayDisplay::onDisable()
 {
@@ -137,9 +128,7 @@ void ShapeArrayDisplay::processMessage(tuw_object_msgs::msg::ShapeArray::ConstSh
 {
   for (const auto & shape : message->shapes) {
     if (!rviz_common::validateFloats(shape.poses)) {
-      setStatus(
-        rviz_common::properties::StatusProperty::Error, "Topic",
-        "Message contained invalid floating point values (nans or infs)");
+      setStatus(rviz_common::properties::StatusProperty::Error, "Topic", "Message contained invalid floating point values (nans or infs)");
       return;
     }
   }
@@ -163,9 +152,7 @@ void ShapeArrayDisplay::processMessage(tuw_object_msgs::msg::ShapeArray::ConstSh
     for (size_t j = 0; j < shape.poses.size(); j++) {
       const auto p = shape.poses[j].position;
       if (j >= points_[i].size()) {
-        points_[i].push_back(
-          std::make_unique<rviz_rendering::Shape>(
-            rviz_rendering::Shape::Cube, scene_manager_, scene_node_));
+        points_[i].push_back(std::make_unique<rviz_rendering::Shape>(rviz_rendering::Shape::Cube, scene_manager_, scene_node_));
       }
       points_[i][j]->setPosition(Ogre::Vector3(p.x, p.y, p.z));
       points_[i][j]->setColor(color);
@@ -173,8 +160,7 @@ void ShapeArrayDisplay::processMessage(tuw_object_msgs::msg::ShapeArray::ConstSh
     }
     if ((shape.type == tuw_object_msgs::msg::Shape::TYPE_MAP) && (shape.poses.size() == 2)) {
       if (!map_frame_billboard_line_) {
-        map_frame_billboard_line_ =
-          std::make_unique<rviz_rendering::BillboardLine>(scene_manager_, scene_node_);
+        map_frame_billboard_line_ = std::make_unique<rviz_rendering::BillboardLine>(scene_manager_, scene_node_);
       }
       map_frame_billboard_line_->clear();
       const auto & p0 = message->shapes[i].poses[0].position;
@@ -190,12 +176,9 @@ void ShapeArrayDisplay::processMessage(tuw_object_msgs::msg::ShapeArray::ConstSh
       map_frame_billboard_line_->addPoint(Ogre::Vector3(p0.x, p1.y, p1.z));
       map_frame_billboard_line_->addPoint(Ogre::Vector3(p0.x, p0.y, p1.z));
     }
-    if (
-      (shape.shape == tuw_object_msgs::msg::Shape::SHAPE_LINE_STRIP) && (shape.poses.size() >= 2))
-    {
+    if ((shape.shape == tuw_object_msgs::msg::Shape::SHAPE_LINE_STRIP) && (shape.poses.size() >= 2)) {
       if (!line_strips_[i]) {
-        line_strips_[i] =
-          std::make_unique<rviz_rendering::BillboardLine>(scene_manager_, scene_node_);
+        line_strips_[i] = std::make_unique<rviz_rendering::BillboardLine>(scene_manager_, scene_node_);
       }
       line_strips_[i]->clear();
       for (size_t j = 0; j < shape.poses.size(); j++) {

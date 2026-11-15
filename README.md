@@ -8,6 +8,9 @@ ROS2 package collection from TU Wien robotics lab.
 - [tuw_gamepad](./tuw_gamepad/README.md): This package is a simple gamepad/joy node. it works perfectly with an F710 Wireless Gamepad built by Logitech.
 - [tuw_camera](./tuw_camera/README.md): libcamera based camera driver for USB (UVC) webcams and Raspberry Pi camera modules, with format conversion (e.g. YUYV → mono8), camera_info / calibration support and image_transport republishing.
 
+## developer notes
+See [Notes.md](./Notes.md) for code formatting and how to release the packages with bloom.
+
 ## branches on github.com
 - __ros2__: this is the stable working branch 
 - __ros2-devel__: this is the devel branch and may be unstable
