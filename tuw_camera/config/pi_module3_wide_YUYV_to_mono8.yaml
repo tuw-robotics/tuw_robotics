@@ -9,6 +9,6 @@
       video:
         topic: image
         format: YUYV
-        target_format: yuyv
+        target_format: mono8
         width: 1536
         height: 864

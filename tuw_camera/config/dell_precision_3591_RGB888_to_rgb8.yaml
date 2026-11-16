@@ -1,0 +1,14 @@
+/**:
+  ros__parameters:
+    camera_info_name: dell_precision_3591
+    camera_info_url: package://tuw_camera/config/camera_calibration/dell_precision_3591.yaml
+    camera_info_topic: camera_info
+    frame_id: "camera_link"
+    stream_roles: ["video"]
+    streams:
+      video:
+        topic: image
+        format: RGB888
+        target_format: bgr8
+        width: 1920
+        height: 1080

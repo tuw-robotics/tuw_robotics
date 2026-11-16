@@ -12,7 +12,7 @@ Any camera libcamera can open works. In practice that means two groups:
   almost all webcams (laptop cameras, Logitech, Microsoft, generic USB
   webcams) and many USB board cameras. Tested: the built-in webcam of a
   Dell Precision 3591 laptop
-  ([`dell_precision_3591_yuyv_to_mono8.yaml`](config/dell_precision_3591_yuyv_to_mono8.yaml)).
+  ([`dell_precision_3591_YUYV_to_mono8.yaml`](config/dell_precision_3591_YUYV_to_mono8.yaml)).
   - One stream per camera, in the formats the camera offers over UVC
     (typically `YUYV` and `MJPEG`, sometimes `NV12` or `GREY` → `R8`).
   - Basic UVC controls (exposure, auto-exposure, brightness, contrast, …)
@@ -102,17 +102,17 @@ parameters come from a YAML file in [`config/`](config) (see
 
 | Argument | Default | Description |
 |---|---|---|
-| `config` | `pi_module3_wide_yuyv_to_mono8.yaml` | Camera configuration file in `tuw_camera/config` |
+| `config` | `pi_module3_wide_YUYV_to_mono8.yaml` | Camera configuration file in `tuw_camera/config` |
 | `namespace` | `camera` | Namespace of all three nodes and their topics |
 | `transport_launch` | `true` | Start `TransportNode` (compressed versions of `<ns>/image`) |
 | `rectify_launch` | `true` | Start `RectifyNode` (`<ns>/image` + `<ns>/camera_info` → `<ns>/image_rect`); needs a calibration |
 
 ```bash
 # Dell Precision 3591 laptop webcam, greyscale, calibrated
-ros2 launch tuw_camera composed.launch.py config:=dell_precision_3591_yuyv_to_mono8.yaml
+ros2 launch tuw_camera composed.launch.py config:=dell_precision_3591_YUYV_to_mono8.yaml
 
 # Pi Camera Module 3 Wide in colour, different namespace
-ros2 launch tuw_camera composed.launch.py config:=pi_module3_wide_bgr.yaml namespace:=front_cam
+ros2 launch tuw_camera composed.launch.py config:=pi_module3_wide_RGB888_to_rgb8.yaml namespace:=front_cam
 
 # Capture node only
 ros2 launch tuw_camera composed.launch.py transport_launch:=false rectify_launch:=false
@@ -139,10 +139,11 @@ Resulting topics (default namespace `camera`):
 
 | File | Camera | Stream | Calibration |
 |---|---|---|---|
-| [`pi_module3_wide_bgr.yaml`](config/pi_module3_wide_bgr.yaml) | Pi Camera Module 3 Wide | `RGB888` → `bgr8`, 1536x864 | `pi_module3_wide.yaml` |
-| [`pi_module3_wide_yuyv.yaml`](config/pi_module3_wide_yuyv.yaml) | Pi Camera Module 3 Wide | `YUYV` → `yuyv`, 1536x864 | `pi_module3_wide.yaml` |
-| [`pi_module3_wide_yuyv_to_mono8.yaml`](config/pi_module3_wide_yuyv_to_mono8.yaml) | Pi Camera Module 3 Wide | `YUYV` → `yuyv`, 1536x864 (`target_format` is not `mono8` yet) | `pi_module3_wide.yaml` |
-| [`dell_precision_3591_yuyv_to_mono8.yaml`](config/dell_precision_3591_yuyv_to_mono8.yaml) | Dell Precision 3591 webcam (UVC) | `YUYV` → `mono8`, 1920x1080 | `dell_precision_3591.yaml` |
+| [`pi_module3_wide_RGB888_to_rgb8.yaml`](config/pi_module3_wide_RGB888_to_rgb8.yaml) | Pi Camera Module 3 Wide | `RGB888` → `bgr8`, 1536x864 | `pi_module3_wide.yaml` |
+| [`pi_module3_wide_YUYV_to_yuyv.yaml`](config/pi_module3_wide_YUYV_to_yuyv.yaml) | Pi Camera Module 3 Wide | `YUYV` → `yuyv`, 1536x864 | `pi_module3_wide.yaml` |
+| [`pi_module3_wide_YUYV_to_mono8.yaml`](config/pi_module3_wide_YUYV_to_mono8.yaml) | Pi Camera Module 3 Wide | `YUYV` → `mono8`, 1536x864 | `pi_module3_wide.yaml` |
+| [`dell_precision_3591_RGB888_to_rgb8.yaml`](config/dell_precision_3591_RGB888_to_rgb8.yaml) | Dell Precision 3591 webcam (UVC) | `RGB888` → `bgr8`, 1920x1080 | `dell_precision_3591.yaml` |
+| [`dell_precision_3591_YUYV_to_mono8.yaml`](config/dell_precision_3591_YUYV_to_mono8.yaml) | Dell Precision 3591 webcam (UVC) | `YUYV` → `mono8`, 1920x1080 | `dell_precision_3591.yaml` |
 
 Calibration files live in [`config/camera_calibration/`](config/camera_calibration).
 A calibration is only valid for the resolution it was made at, and its
@@ -273,7 +274,7 @@ Or load one of the config files:
 ```bash
 ros2 run tuw_camera camera_capture --ros-args \
   -r __ns:=/camera \
-  --params-file $(ros2 pkg prefix tuw_camera)/share/tuw_camera/config/dell_precision_3591_yuyv_to_mono8.yaml
+  --params-file $(ros2 pkg prefix tuw_camera)/share/tuw_camera/config/dell_precision_3591_YUYV_to_mono8.yaml
 ```
 
 `-p` arguments placed after `--params-file` override values from the file.
